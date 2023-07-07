@@ -2,7 +2,7 @@ import React from 'react'
 
 function Products({details}) {
   return (
-    <div className="mx-auto grid max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
+    <div className="mx-auto flex max-w-xs items-center px-2 py-10">
     <div className="rounded-md border shadow-lg">
       <img
         src={details.image}

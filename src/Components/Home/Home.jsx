@@ -14,14 +14,13 @@ function Home() {
   },[])
 
   return (
-    <div className='mx-auto max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 mt-5'>
-    <h1 className='font-bold text-xl'>Products</h1> 
+    <div className='mx-auto max-w-12xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 mt-5'>
+    <h1 className='font-bold text-2xl mx-10'>Products</h1> 
     <div className='flex flex-wrap'>
-   
     {products?.map(pro=>(
-      <div>
+    
       <Products details={pro}/>
-      </div>
+     
     ))
     
     }

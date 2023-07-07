@@ -22,7 +22,7 @@ export default function Navbar() {
         </svg>
         
           </span>
-          <span className="font-bold">MyShop.</span>
+          <span className="font-bold text-2xl">MyShop.</span>
         </div>
       
        <div className="flex grow justify-center">
