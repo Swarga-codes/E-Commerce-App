@@ -19,7 +19,7 @@ function Home() {
     <div className='flex flex-wrap'>
     {products?.map(pro=>(
     
-      <Products details={pro}/>
+      <Products details={pro} key={pro.id}/>
      
     ))
     
