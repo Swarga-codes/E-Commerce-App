@@ -1,8 +1,14 @@
 import React from 'react'
-
+import LimitPara from '../../util/LimitPara'
+import ProductDetails from '../ProductDetails/ProductDetails'
 function Products({details}) {
+ const[open,setOpen]=React.useState(false)
+ function closeModal(){
+  setOpen(false)
+ }
   return (
-    <div className="mx-auto flex max-w-xs items-center px-2 py-10">
+    <>
+    <div className="mx-auto flex max-w-xs items-center px-2 py-10" onClick={()=>setOpen(true)}>
     <div className="rounded-md border shadow-lg">
       <img
         src={details.image}
@@ -14,7 +20,7 @@ function Products({details}) {
           {details.title}
         </h1>
         <p className="mt-3 text-sm text-gray-600">
-          {details.description}
+          {LimitPara(details.description,20)}
         </p>
         <div className="mt-4">
           <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[16px] font-semibold text-gray-900">
@@ -47,7 +53,8 @@ function Products({details}) {
       </div>
     </div>
     </div>
-   
+    {open && <ProductDetails details={details} isOpen={open} closeModal={closeModal}/>}
+   </>
   )
 }
 

@@ -5,7 +5,6 @@ import { Route,Routes } from 'react-router-dom'
 import Cart from './Components/Cart/Cart'
 function App() {
 
-
   return (
     <>
     <Routes>
