@@ -1,34 +1,40 @@
 import React from 'react'
 import LimitPara from '../../util/LimitPara'
+import { useSelector,useDispatch } from 'react-redux'
+import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
 function Products({details}) {
  const[open,setOpen]=React.useState(false)
+ const dispatch=useDispatch()
+ const addToCart=()=>{
+  dispatch(actions.addToCart(details))
+ }
  function closeModal(){
   setOpen(false)
  }
   return (
     <>
-    <div className="mx-auto flex max-w-xs items-center px-2 py-10" onClick={()=>setOpen(true)}>
+    <div className="mx-auto flex max-w-xs items-center px-2 py-10">
     <div className="rounded-md border shadow-lg">
       <img
         src={details.image}
         alt="no preview"
         className="aspect-[16/9] w-full rounded-md md:aspect-auto md:h-[300px] lg:h-[200px] px-2"
-      />
+        onClick={()=>setOpen(true)}/>
       <div className="p-4">
-        <h1 className="inline-flex items-center text-lg font-semibold">
+        <h1 className="inline-flex items-center text-lg font-semibold" onClick={()=>setOpen(true)}>
           {details.title}
         </h1>
-        <p className="mt-3 text-sm text-gray-600">
+        <p className="mt-3 text-sm text-gray-600" onClick={()=>setOpen(true)}>
           {LimitPara(details.description,20)}
         </p>
-        <div className="mt-4">
+        <div className="mt-4" onClick={()=>setOpen(true)}>
           <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[16px] font-semibold text-gray-900">
             #{details.category}
           </span>
         
         </div>
-        <div className="mt-3 flex items-center space-x-2">
+        <div className="mt-3 flex items-center space-x-2" onClick={()=>setOpen(true)}>
          
 <div class="flex items-center">
 <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -45,13 +51,15 @@ function Products({details}) {
         
         </div>
         <button
-          type="button"
-          className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+        type="button"
+        className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+      onClick={addToCart}
         >
-          Add to Cart
-        </button>
+        Add to Cart
+      </button>
       </div>
     </div>
+ 
     </div>
     {open && <ProductDetails details={details} isOpen={open} closeModal={closeModal}/>}
    </>
