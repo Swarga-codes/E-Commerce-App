@@ -1,46 +1,9 @@
 import { Heart, Trash } from 'lucide-react'
 import React from 'react'
-
-const products = [
-  {
-    id: 1,
-    name: 'Nike Air Force 1 07 LV8',
-    href: '#',
-    price: '₹47,199',
-    originalPrice: '₹48,900',
-    discount: '5% Off',
-    color: 'Orange',
-    size: '8 UK',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/54a510de-a406-41b2-8d62-7f8c587c9a7e/air-force-1-07-lv8-shoes-9KwrSk.png',
-  },
-  {
-    id: 2,
-    name: 'Nike Blazer Low 77 SE',
-    href: '#',
-    price: '₹1,549',
-    originalPrice: '₹2,499',
-    discount: '38% off',
-    color: 'White',
-    leadTime: '3-4 weeks',
-    size: '8 UK',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e48d6035-bd8a-4747-9fa1-04ea596bb074/blazer-low-77-se-shoes-0w2HHV.png',
-  },
-  {
-    id: 3,
-    name: 'Nike Air Max 90',
-    href: '#',
-    price: '₹2219 ',
-    originalPrice: '₹999',
-    discount: '78% off',
-    color: 'Black',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/fd17b420-b388-4c8a-aaaa-e0a98ddf175f/dunk-high-retro-shoe-DdRmMZ.png',
-  },
-]
-
+import { useSelector } from 'react-redux'
 export default function Cart() {
+  const cart=useSelector(state=>state.cart)
+  console.log(cart)
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
       <div className="mx-auto max-w-2xl py-8 lg:max-w-7xl">
@@ -53,13 +16,14 @@ export default function Cart() {
               Items in your shopping cart
             </h2>
             <ul role="list" className="divide-y divide-gray-200">
-              {products.map((product, productIdx) => (
+              {cart.length>0?
+                cart.map((product, productIdx) => (
                 <div key={product.id} className="">
                   <li className="flex py-6 sm:py-6 ">
                     <div className="flex-shrink-0">
                       <img
-                        src={product.imageSrc}
-                        alt={product.name}
+                        src={product.image}
+                        alt={"no preview"}
                         className="sm:h-38 sm:w-38 h-24 w-24 rounded-md object-contain object-center"
                       />
                     </div>
@@ -69,28 +33,28 @@ export default function Cart() {
                         <div>
                           <div className="flex justify-between">
                             <h3 className="text-sm">
-                              <a href={product.href} className="font-semibold text-black">
-                                {product.name}
+                              <a href="#" className="font-semibold text-black">
+                                {product.title}
                               </a>
                             </h3>
                           </div>
                           <div className="mt-1 flex text-sm">
-                            <p className="text-sm text-gray-500">{product.color}</p>
-                            {product.size ? (
+                          <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+</svg>
+                            <p className="text-sm text-gray-500">{product.rating.rate}</p>
+                           
                               <p className="ml-4 border-l border-gray-200 pl-4 text-sm text-gray-500">
-                                {product.size}
+                                {product.rating.count} Reviews
                               </p>
-                            ) : null}
+                       
                           </div>
                           <div className="mt-1 flex items-end">
-                            <p className="text-xs font-medium text-gray-500 line-through">
-                              {product.originalPrice}
-                            </p>
                             <p className="text-sm font-medium text-gray-900">
-                              &nbsp;&nbsp;{product.price}
+                              &nbsp;&nbsp;${product.price}
                             </p>
                             &nbsp;&nbsp;
-                            <p className="text-sm font-medium text-green-500">{product.discount}</p>
+                         
                           </div>
                         </div>
                       </div>
@@ -118,7 +82,10 @@ export default function Cart() {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            :
+            <p className='text-3xl'>The cart is empty</p>
+            }
             </ul>
           </section>
           {/* Order summary */}
@@ -135,8 +102,8 @@ export default function Cart() {
             <div>
               <dl className=" space-y-1 px-2 py-4">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm text-gray-800">Price (3 item)</dt>
-                  <dd className="text-sm font-medium text-gray-900">₹ 52,398</dd>
+                  <dt className="text-sm text-gray-800">Price ({cart.length} item)</dt>
+                  <dd className="text-sm font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0)}</dd>
                 </div>
                 <div className="flex items-center justify-between pt-4">
                   <dt className="flex items-center text-sm text-gray-800">

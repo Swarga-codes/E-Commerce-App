@@ -3,8 +3,9 @@ import LimitPara from '../../util/LimitPara'
 import { useSelector,useDispatch } from 'react-redux'
 import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
-function Products({details}) {
+function Products({details,idx}) {
  const[open,setOpen]=React.useState(false)
+ const cart=useSelector(state=>state.cart)
  const dispatch=useDispatch()
  const addToCart=()=>{
   dispatch(actions.addToCart(details))
@@ -50,6 +51,7 @@ function Products({details}) {
           <span className="block text-3xl font-semibold">${details.price}</span>
         
         </div>
+        {!cart.find(obj=>obj.title===details.title)?
         <button
         type="button"
         className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
@@ -57,6 +59,15 @@ function Products({details}) {
         >
         Add to Cart
       </button>
+       :
+       <button
+       type="button"
+       className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+     onClick={addToCart}
+       >
+       Remove from Cart
+     </button>
+      }
       </div>
     </div>
  
