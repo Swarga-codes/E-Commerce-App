@@ -65,7 +65,7 @@ export default function Cart() {
                     </div>
                   </li>
                   <div className="mb-2 flex">
-                    <div className="min-w-24 flex">
+                    {/*<div className="min-w-24 flex">
                       <button type="button" className="h-7 w-7">
                         -
                       </button>
@@ -77,7 +77,7 @@ export default function Cart() {
                       <button type="button" className="flex h-7 w-7 items-center justify-center">
                         +
                       </button>
-                    </div>
+                </div>*/}
                     <div className="ml-6 flex text-sm">
                       <button type="button" onClick={()=>removeFromCart(productIdx)} className="flex items-center space-x-1 px-2 py-1 pl-0">
                         <Trash size={12} className="text-red-500" />
@@ -107,7 +107,7 @@ export default function Cart() {
               <dl className=" space-y-1 px-2 py-4">
                 <div className="flex items-center justify-between">
                   <dt className="text-sm text-gray-800">Price ({cart.length} item)</dt>
-                  <dd className="text-sm font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0)}</dd>
+                  <dd className="text-sm font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0).toFixed(2)}</dd>
                 </div>
                 {/*<div className="flex items-center justify-between pt-4">
                   <dt className="flex items-center text-sm text-gray-800">
