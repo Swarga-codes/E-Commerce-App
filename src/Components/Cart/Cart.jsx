@@ -5,8 +5,8 @@ import { actions } from '../../util/Store'
 export default function Cart() {
   const cart=useSelector(state=>state.cart)
   const dispatch=useDispatch()
-  const removeFromCart=(id)=>{
-    dispatch(actions.removeFromCart(id))
+  const removeFromCart=(idx)=>{
+    dispatch(actions.removeFromCart(idx))
   }
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
@@ -79,7 +79,7 @@ export default function Cart() {
                       </button>
                     </div>
                     <div className="ml-6 flex text-sm">
-                      <button type="button" onClick={removeFromCart} className="flex items-center space-x-1 px-2 py-1 pl-0">
+                      <button type="button" onClick={()=>removeFromCart(productIdx)} className="flex items-center space-x-1 px-2 py-1 pl-0">
                         <Trash size={12} className="text-red-500" />
                         <span className="text-xs font-medium text-red-500">Remove</span>
                       </button>

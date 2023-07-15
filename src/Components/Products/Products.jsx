@@ -10,8 +10,8 @@ function Products({details,idx}) {
  const addToCart=()=>{
   dispatch(actions.addToCart(details))
  }
- const removeFromCart=(id)=>{
-   dispatch(actions.removeFromCart(id))
+ const removeFromCart=()=>{
+   dispatch(actions.removeFromCart(idx))
  }
  function closeModal(){
   setOpen(false)
@@ -66,7 +66,7 @@ function Products({details,idx}) {
        <button
        type="button"
        className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-     onClick={removeFromCart}
+     onClick={()=>removeFromCart()}
        >
        Remove from Cart
      </button>
