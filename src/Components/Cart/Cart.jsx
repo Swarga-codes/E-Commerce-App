@@ -1,9 +1,13 @@
 import { Heart, Trash } from 'lucide-react'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions } from '../../util/Store'
 export default function Cart() {
   const cart=useSelector(state=>state.cart)
-  console.log(cart)
+  const dispatch=useDispatch()
+  const removeFromCart=(id)=>{
+    dispatch(actions.removeFromCart(id))
+  }
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
       <div className="mx-auto max-w-2xl py-8 lg:max-w-7xl">
@@ -75,7 +79,7 @@ export default function Cart() {
                       </button>
                     </div>
                     <div className="ml-6 flex text-sm">
-                      <button type="button" className="flex items-center space-x-1 px-2 py-1 pl-0">
+                      <button type="button" onClick={removeFromCart} className="flex items-center space-x-1 px-2 py-1 pl-0">
                         <Trash size={12} className="text-red-500" />
                         <span className="text-xs font-medium text-red-500">Remove</span>
                       </button>
@@ -105,12 +109,12 @@ export default function Cart() {
                   <dt className="text-sm text-gray-800">Price ({cart.length} item)</dt>
                   <dd className="text-sm font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0)}</dd>
                 </div>
-                <div className="flex items-center justify-between pt-4">
+                {/*<div className="flex items-center justify-between pt-4">
                   <dt className="flex items-center text-sm text-gray-800">
                     <span>Discount</span>
                   </dt>
                   <dd className="text-sm font-medium text-green-700">- ₹ 3,431</dd>
-                </div>
+          </div>*/}
                 <div className="flex items-center justify-between py-4">
                   <dt className="flex text-sm text-gray-800">
                     <span>Delivery Charges</span>
@@ -119,12 +123,12 @@ export default function Cart() {
                 </div>
                 <div className="flex items-center justify-between border-y border-dashed py-4 ">
                   <dt className="text-base font-medium text-gray-900">Total Amount</dt>
-                  <dd className="text-base font-medium text-gray-900">₹ 48,967</dd>
+                  <dd className="text-base font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0)}</dd>
                 </div>
               </dl>
-              <div className="px-2 pb-4 font-medium text-green-700">
+              {/*<div className="px-2 pb-4 font-medium text-green-700">
                 You will save ₹ 3,431 on this order
-              </div>
+        </div>*/}
             </div>
           </section>
         </form>
