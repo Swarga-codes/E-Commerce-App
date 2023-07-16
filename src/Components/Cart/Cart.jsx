@@ -2,11 +2,12 @@ import { Heart, Trash } from 'lucide-react'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../../util/Store'
+import { ArrowRight } from 'lucide-react'
 export default function Cart() {
   const cart=useSelector(state=>state.cart)
   const dispatch=useDispatch()
-  const removeFromCart=(idx)=>{
-    dispatch(actions.removeFromCart(idx))
+  const removeFromCart=(title)=>{
+    dispatch(actions.removeFromCart(title))
   }
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
@@ -79,7 +80,7 @@ export default function Cart() {
                       </button>
                 </div>*/}
                     <div className="ml-6 flex text-sm">
-                      <button type="button" onClick={()=>removeFromCart(productIdx)} className="flex items-center space-x-1 px-2 py-1 pl-0">
+                      <button type="button" onClick={()=>removeFromCart(product.title)} className="flex items-center space-x-1 px-2 py-1 pl-0">
                         <Trash size={12} className="text-red-500" />
                         <span className="text-xs font-medium text-red-500">Remove</span>
                       </button>
@@ -129,6 +130,15 @@ export default function Cart() {
               {/*<div className="px-2 pb-4 font-medium text-green-700">
                 You will save ₹ 3,431 on this order
         </div>*/}
+        { cart.length>0 && 
+        <button
+        type="button"
+        className="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white hover:bg-black/80"
+      >
+        Proceed to Checkout
+        <ArrowRight className="ml-2 h-4 w-4" />
+      </button>
+        }
             </div>
           </section>
         </form>

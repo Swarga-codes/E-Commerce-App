@@ -11,7 +11,7 @@ function Products({details,idx}) {
   dispatch(actions.addToCart(details))
  }
  const removeFromCart=()=>{
-   dispatch(actions.removeFromCart(idx))
+   dispatch(actions.removeFromCart(details.title))
  }
  function closeModal(){
   setOpen(false)
