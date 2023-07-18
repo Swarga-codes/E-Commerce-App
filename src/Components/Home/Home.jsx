@@ -4,9 +4,10 @@ import fetchProducts from '../../util/useFetch'
 function Home() {
   const[products,setProducts]=useState([])
   useEffect(()=>{
-    return async()=>{
+   async function getProducts(){
     setProducts(await fetchProducts('products'))
-    }
+   }
+   getProducts()
   },[])
   return (
     <div className='mx-auto max-w-12xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 mt-5'>
