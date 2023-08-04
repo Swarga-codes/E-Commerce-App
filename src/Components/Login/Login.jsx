@@ -1,7 +1,14 @@
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
-
-export function Login() {
+import {GoogleLogin} from 'react-google-login'
+export default function Login() {
+  const clientId='62278106137-m73tb8io9tgdafifdro8ltn2sfqokore.apps.googleusercontent.com'
+  const SuccessHandler=(res)=>{
+    console.log('USER logged in successfully',res);
+  }
+  const FailureHandler=(res)=>{
+    console.log('Login failed',res);
+  }
   return (
     <section className="rounded-md bg-black/70 p-2">
       <div className="flex items-center justify-center bg-white px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
@@ -92,6 +99,14 @@ export function Login() {
               </span>
               Sign in with Google
             </button>
+            <GoogleLogin
+            clientId={clientId}
+            buttonText='Login'
+            onSuccess={SuccessHandler}
+            onFailure={FailureHandler}
+            cookiePolicy={'single_host_origin'}
+            isSignedIn={true}
+            />
             <button
               type="button"
               className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
