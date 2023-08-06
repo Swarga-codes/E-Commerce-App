@@ -4,12 +4,13 @@ import React from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
-
+import { useAuth0 } from '@auth0/auth0-react'
+import Dropdown from './Dropdown'
 export default function Navbar() {
   const counter=useSelector(state=>state.cart)
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-
+  const {isAuthenticated,user}=useAuth0();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
@@ -42,6 +43,9 @@ export default function Navbar() {
       </Link>
       <span>{counter.length}</span>
         </div>
+        {isAuthenticated?
+          <Dropdown/>
+          :
         <div className="hidden lg:block ml-3">
         <Link to='/login'>
           <button
@@ -52,6 +56,7 @@ export default function Navbar() {
           </button>
           </Link>
         </div>
+        }
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
         </div>
