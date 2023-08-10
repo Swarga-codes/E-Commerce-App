@@ -4,7 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 
 export default function Login() {
-  // const clientId='62278106137-m73tb8io9tgdafifdro8ltn2sfqokore.apps.googleusercontent.com'
   const {loginWithRedirect } = useAuth0();
   return (
     <section className="rounded-md bg-black/70 p-2">
