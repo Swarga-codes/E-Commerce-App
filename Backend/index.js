@@ -2,8 +2,10 @@ const express=require('express')
 const app=express()
 const dotenv=require('dotenv')
 dotenv.config()
+const cors=require('cors')
 const mongoose=require('mongoose')
 const PORT=5000 ||  process.env.PORT
+const Authentication=require('./routes/authentication')
 mongoose.connect(process.env.MONGO_URL)
 mongoose.connection.on('connected',()=>{
     console.log('Connected to mongodb')
@@ -14,6 +16,8 @@ mongoose.connection.on('error',()=>{
 
 
 app.use(express.json())
+app.use(cors())
+app.use('/api/auth',Authentication)
 app.get('/',(req,res)=>{
 res.send('Hello')
 })
