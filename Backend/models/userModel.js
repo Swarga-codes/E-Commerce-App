@@ -1,6 +1,11 @@
 const mongoose=require('mongoose')
+const {ObjectID}=mongoose.Schema.Types
 const userSchema=new mongoose.Schema({
     email:{
+        type:String,
+        required:true
+    },
+    name:{
         type:String,
         required:true
     },
@@ -12,23 +17,25 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    userType:{
-        type:String,
-        required:true
-    },
-    ShopName:{
-        type:String
-    },
     wishlist:[
         {
-            type:String
+            type:ObjectID,
+            ref:'PRODUCTS'
         }
     ],
     cartItems:[
         {
-            type:String
+            type:ObjectID,
+            ref:'PRODUCTS'
         }
     ],
+    address:{
+        streetName:{type:String},
+        city:{type:String},
+        state:{type:String},
+        country:{type:String},
+        postalCode:{type:Number}
+    },
     profilePic:{
         type:String
     }
