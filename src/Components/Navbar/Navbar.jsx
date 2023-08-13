@@ -4,17 +4,20 @@ import React from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
-import { useAuth0 } from '@auth0/auth0-react'
 import Dropdown from './Dropdown'
+import { useLocation } from 'react-router-dom'
+import layoutException from '../../util/layoutException'
 export default function Navbar() {
   const counter=useSelector(state=>state.cart)
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-  const {isAuthenticated,user}=useAuth0();
+ const location=useLocation()
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
-
+if(layoutException.includes(location.pathname)) {
+return null
+}
   return (
     <div className="relative w-full bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -43,11 +46,11 @@ export default function Navbar() {
       </Link>
       <span>{counter.length}</span>
         </div>
-        {isAuthenticated?
+        
           <Dropdown/>
-          :
+        
         <div className="hidden lg:block ml-3">
-        <Link to='/login'>
+        <Link to='/users/login'>
           <button
             type="button"
             className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
@@ -56,7 +59,7 @@ export default function Navbar() {
           </button>
           </Link>
         </div>
-        }
+        
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
         </div>

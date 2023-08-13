@@ -1,6 +1,11 @@
 import React from "react";
-
+import { useLocation } from "react-router-dom";
+import layoutException from "../../util/layoutException";
 export default function Footer() {
+  const location=useLocation()
+  if(layoutException.includes(location.pathname)) {
+return null
+}
   return (
     <section className="relative overflow-hidden bg-white py-8">
       <div className="container relative z-10 mx-auto px-4">

@@ -1,17 +1,17 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { useAuth0 } from '@auth0/auth0-react'
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Dropdown({}) {
-    const {user,logout}=useAuth0();
+    
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="">
-          <img  className="inline-block h-10 w-10 rounded-full" src={user.picture} alt="" />
+          <img  className="inline-block h-10 w-10 rounded-full" src="" alt="no prev" />
         </Menu.Button>
       </div>
 
