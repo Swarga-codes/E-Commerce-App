@@ -9,6 +9,14 @@ const sellerSchema= new mongoose.Schema({
         type:String,
         required:true
     },
+    phoneNumber:{
+        type:String,
+        required:true
+    },
+    upiId:{
+        type:String,
+        required:true
+    },
     password:{
         type:String,
         required:true
@@ -30,7 +38,10 @@ const sellerSchema= new mongoose.Schema({
             type:ObjectID,
             ref:'Orders'
             }
-    ]
+    ],
+    profilePic:{
+        type:String
+    }
 })
 
 const SELLER=mongoose.model('SELLER',sellerSchema)
