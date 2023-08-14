@@ -67,7 +67,7 @@ export default function UserSignup() {
               <p className="mt-2text-sm text-gray-600 ">
               Want to become a seller?{' '}
               <Link
-                to={"/users/register"}
+                to={"/seller/register"}
                 title=""
                 className="font-semibold text-black transition-all duration-200 hover:underline"
               >

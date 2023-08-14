@@ -15,7 +15,6 @@ const sellerSchema= new mongoose.Schema({
     },
     upiId:{
         type:String,
-        required:true
     },
     password:{
         type:String,
@@ -31,6 +30,12 @@ const sellerSchema= new mongoose.Schema({
         {
         type:ObjectID,
         ref:'Orders'
+        }
+    ],
+    approvedOrders:[
+        {
+            type:ObjectID,
+            ref:'Orders'
         }
     ],
     completedOrders:[
