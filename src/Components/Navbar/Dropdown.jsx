@@ -1,12 +1,13 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { useNavigate } from 'react-router-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Dropdown({}) {
-    
+    const navigator=useNavigate()
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -29,7 +30,12 @@ export default function Dropdown({}) {
             <Menu.Item>
               {({ active }) => (
                 <a
-                onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                onClick={() => {
+                  if(window.confirm('Do you really wish to logout?')){
+                    localStorage.clear()
+                    navigator('/users/login')
+                  }
+                } }
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'

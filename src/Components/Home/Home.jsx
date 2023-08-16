@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Products from '../Products/Products'
 import fetchProducts from '../../util/useFetch'
-import { useAuth0 } from '@auth0/auth0-react'
 function Home() {
   const[products,setProducts]=useState([])
-  const {user,getAccessTokenWithPopup}=useAuth0();
+  
   useEffect(()=>{
    async function getProducts(){
     setProducts(await fetchProducts('products'))
    }
    getProducts()
-   console.log(user)
+  
   },[])
  
   return (

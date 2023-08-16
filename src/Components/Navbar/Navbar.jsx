@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
@@ -46,9 +46,9 @@ return null
       </Link>
       <span>{counter.length}</span>
         </div>
-        
+        {localStorage.getItem('user_token')?
           <Dropdown/>
-        
+        :
         <div className="hidden lg:block ml-3">
         <Link to='/users/login'>
           <button
@@ -59,7 +59,7 @@ return null
           </button>
           </Link>
         </div>
-        
+  }
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
         </div>
