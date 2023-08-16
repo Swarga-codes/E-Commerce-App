@@ -29,6 +29,12 @@ const userSchema=new mongoose.Schema({
             ref:'PRODUCTS'
         }
     ],
+    ordersList:[
+        {
+            type:ObjectID,
+            ref:'Orders'
+        }
+    ],
     address:{
         streetName:{type:String},
         city:{type:String},

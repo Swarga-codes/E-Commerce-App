@@ -1,18 +1,24 @@
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { useNavigate } from 'react-router-dom'
-
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
+import ProfilePic from '../../assets/userdefault.png'
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Dropdown({}) {
-    const navigator=useNavigate()
+  const navigator = useNavigate();
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="">
-          <img  className="inline-block h-10 w-10 rounded-full" src="" alt="no prev" />
+          <img
+            className="inline-block h-8 w-8 rounded-full"
+            src={
+      ProfilePic
+          }
+            alt="no prev"
+          />
         </Menu.Button>
       </div>
 
@@ -30,25 +36,24 @@ export default function Dropdown({}) {
             <Menu.Item>
               {({ active }) => (
                 <a
-                onClick={() => {
-                  if(window.confirm('Do you really wish to logout?')){
-                    localStorage.clear()
-                    navigator('/users/login')
-                  }
-                } }
+                  onClick={() => {
+                    if (window.confirm("Do you really wish to logout?")) {
+                      localStorage.clear();
+                      navigator("/users/login");
+                    }
+                  }}
                   className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
                   )}
                 >
                   Logout
                 </a>
               )}
             </Menu.Item>
-           
           </div>
         </Menu.Items>
       </Transition>
     </Menu>
-  )
+  );
 }
