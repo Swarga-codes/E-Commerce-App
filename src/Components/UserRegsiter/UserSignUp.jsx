@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthPageLogo from '../../assets/userauthlogo.png'
 
 export default function UserSignup() {
+  const [email,setEmail]=useState('')
+  const [name,setName]=useState('')
+  const [phoneNumber,setPhoneNumber]=useState('')
+  const [password,setPassword]=useState('')
+  const [error,setError]=useState('')
+  const navigate=useNavigate()
+  const userRegister=async()=>{
+    const response=await fetch('http://localhost:5000/api/auth/user/register',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        email,
+        name,
+        phoneNumber,
+        password
+      })
+    })
+    const data=await response.json()
+    if(data.error){
+      setError(data.error)
+    }
+    else{
+      navigate('/users/login')
+    }
+  }
   return (
     <section className="p-2">
       <div className="flex items-center justify-center bg-white px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
@@ -22,7 +49,11 @@ export default function UserSignup() {
               Log In
             </Link>
           </p>
-          <form className="mt-8">
+          <p className='text-center text-red-500 font-semibold'>{error}</p>
+          <form className="mt-8" onSubmit={(e)=>{
+            e.preventDefault();
+            userRegister();
+          }}>
             <div className="space-y-5">
               <div>
                 <label htmlFor="" className="text-base font-medium text-gray-900">
@@ -34,6 +65,8 @@ export default function UserSignup() {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="email"
                     placeholder="Email"
+                    onChange={(e)=>setEmail(e.target.value)}
+                    required
                   ></input>
                 </div>
               </div>
@@ -47,6 +80,8 @@ export default function UserSignup() {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="text"
                     placeholder="Full Name"
+                    onChange={(e)=>setName(e.target.value)}
+                    required
                   ></input>
                 </div>
               </div>
@@ -60,6 +95,8 @@ export default function UserSignup() {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="tel"
                     placeholder="Phone Number"
+                    onChange={(e)=>setPhoneNumber(e.target.value)}
+                    required
                   ></input>
                 </div>
               </div>
@@ -79,12 +116,14 @@ export default function UserSignup() {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="password"
                     placeholder="Password"
+                    onChange={(e)=>setPassword(e.target.value)}
+                    required
                   ></input>
                 </div>
               </div>
               <div>
                 <button
-                  type="button"
+                  type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
                   Get started <ArrowRight className="ml-2" size={16} />
