@@ -32,7 +32,7 @@ const userSchema=new mongoose.Schema({
     ordersList:[
         {
             type:ObjectID,
-            ref:'Orders'
+            ref:'ORDER'
         }
     ],
     address:{
@@ -45,6 +45,11 @@ const userSchema=new mongoose.Schema({
     profilePic:{
         type:String
     }
-})
+}
+,
+{
+    timestamps:true
+}
+)
 const USER=mongoose.model('USER',userSchema)
 module.exports=USER
