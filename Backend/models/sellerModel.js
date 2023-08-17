@@ -29,19 +29,19 @@ const sellerSchema= new mongoose.Schema({
     ordersList:[
         {
         type:ObjectID,
-        ref:'Orders'
+        ref:'ORDER'
         }
     ],
     approvedOrders:[
         {
             type:ObjectID,
-            ref:'Orders'
+            ref:'ORDER'
         }
     ],
     completedOrders:[
         {
             type:ObjectID,
-            ref:'Orders'
+            ref:'ORDER'
             }
     ],
     profilePic:{

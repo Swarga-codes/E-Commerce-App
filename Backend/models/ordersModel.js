@@ -15,7 +15,11 @@ const ordersSchema=new mongoose.model({
         type:ObjectID,
         ref:'SELLER'
     }
-    ]
+    ],
+    orderAmount:{
+        type:Number,
+        required:true
+    }
 },
 {
     timestamps:true
