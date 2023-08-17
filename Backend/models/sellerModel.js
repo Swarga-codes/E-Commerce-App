@@ -15,6 +15,7 @@ const sellerSchema= new mongoose.Schema({
     },
     upiId:{
         type:String,
+        default:""
     },
     password:{
         type:String,
@@ -45,7 +46,8 @@ const sellerSchema= new mongoose.Schema({
             }
     ],
     profilePic:{
-        type:String
+        type:String,
+        default:"https://cdn-icons-png.flaticon.com/512/456/456212.png"
     }
 })
 
