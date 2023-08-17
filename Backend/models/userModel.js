@@ -43,7 +43,8 @@ const userSchema=new mongoose.Schema({
         postalCode:{type:Number}
     },
     profilePic:{
-        type:String
+        type:String,
+        default:'https://cdn-icons-png.flaticon.com/512/456/456212.png'
     }
 }
 ,

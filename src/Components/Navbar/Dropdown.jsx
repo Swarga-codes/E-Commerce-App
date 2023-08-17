@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import ProfilePic from '../../assets/userdefault.png'
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -15,7 +14,7 @@ export default function Dropdown({}) {
           <img
             className="inline-block h-8 w-8 rounded-full"
             src={
-      ProfilePic
+      JSON.parse(localStorage.getItem('user_data')).profilePic
           }
             alt="no prev"
           />
@@ -31,7 +30,7 @@ export default function Dropdown({}) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
