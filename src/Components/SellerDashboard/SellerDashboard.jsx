@@ -1,8 +1,14 @@
 import React from 'react'
+import SellerNavbar from '../SellerNavbar/SellerNavbar'
 
 function SellerDashboard() {
   return (
-    <div>SellerDashboard</div>
+    <>
+    <SellerNavbar/>
+    <div className="seller_dashboard">
+    Seller dashboard
+    </div>
+    </>
   )
 }
 

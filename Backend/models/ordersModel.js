@@ -19,6 +19,10 @@ const ordersSchema=new mongoose.model({
     orderAmount:{
         type:Number,
         required:true
+    },
+    isComplete:{
+        type:Boolean,
+        default:false
     }
 },
 {

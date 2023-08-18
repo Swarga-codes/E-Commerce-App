@@ -33,12 +33,6 @@ const sellerSchema= new mongoose.Schema({
         ref:'ORDER'
         }
     ],
-    approvedOrders:[
-        {
-            type:ObjectID,
-            ref:'ORDER'
-        }
-    ],
     completedOrders:[
         {
             type:ObjectID,
