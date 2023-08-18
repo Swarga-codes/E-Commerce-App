@@ -2,6 +2,8 @@
 
 import React from 'react'
 import { Menu, X, ChevronRight } from 'lucide-react'
+import Dropdown from './Dropdown'
+import { Link } from 'react-router-dom'
 
 const menuItems = [
   {
@@ -40,25 +42,21 @@ export default function SellerNavbar() {
           <ul className="ml-12 inline-flex space-x-8">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <a
-                 
+                <Link
+                 to={`/seller/products/${item.name.toLowerCase()}`}
                   className="inline-flex items-center text-sm font-semibold text-gray-800 hover:text-gray-900 cursor-pointer"
                 >
                   {item.name}
                  
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
         <div className="ml-2 mt-2 hidden lg:block">
           <span className="relative inline-block">
-            <img
-              className="h-10 w-10 rounded-full"
-              src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-              alt="Dan_Abromov"
-            />
-            <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
+           <Dropdown/>
+  
           </span>
         </div>
         <div className="ml-2 lg:hidden">
