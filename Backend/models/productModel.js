@@ -36,6 +36,8 @@ const productSchema=new mongoose.Schema({
         {postedBy:{type:ObjectID,ref:'USER'},comment:{type:String}}
     ],
 
+},{
+    timestamps:true
 })
 const PRODUCTS=mongoose.model('PRODUCTS',productSchema)
 module.exports=PRODUCTS

@@ -1,4 +1,6 @@
 const PRODUCTS=require('../models/productModel')
+
+//------------Create Products---------------//
 const createProducts = async(req, res) => {
   const {
     title,
@@ -33,4 +35,12 @@ createdBy:req.seller._id
   return res.status(200).json({error:'Product created successfully'})
 };
 
-module.exports = { createProducts };
+
+//------------Display Products---------------//
+
+const displayProducts=async(req,res)=>{
+const products=await PRODUCTS.find().sort({_id:-1}).populate("createdBy","shopName email phoneNumber profilePic upiId")
+if(!products) return res.status(500).json({error:'Could not fetch products, try again'})
+return res.status(200).json(products)
+}
+module.exports = { createProducts,displayProducts };
