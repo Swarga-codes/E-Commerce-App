@@ -1,7 +1,29 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SellerNavbar from '../SellerNavbar/SellerNavbar'
+import Category from './Category';
+
 function CreateProducts() {
+  const productCategories = [
+    "Electronics",
+    "Clothing",
+    "Home Appliances",
+    "Beauty",
+    "Books",
+    "Sports",
+    "Toys",
+    "Furniture",
+    "Jewelry",
+  ];
   const imageRef=useRef()
+  const [image,setImage]=useState("");
+  const [hostedUrl,setHostedUrl]=useState("");
+  const[title,setTitle]=useState("");
+  const[description,setDescription]=useState("");
+  const[category,setCategory]=useState(productCategories[0]);
+  const[price,setPrice]=useState(0);
+  const[discountedPrice,setDiscountedPrice]=useState(0);
+  const[quantity,setQuantity]=useState(0);
+
   const loadFile = (e) => {
     let output = document.getElementById("output");
     output.src = URL.createObjectURL(e.target.files[0]);
@@ -9,6 +31,30 @@ function CreateProducts() {
       URL.revokeObjectURL(output.src);
     };
   };
+ function sendImageToCloudinary(image) {
+
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "e_commerce_app");
+    data.append("cloud_name", "markus0509");
+    fetch("https://api.cloudinary.com/v1_1/markus0509/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setHostedUrl(data.url);
+        console.log(data)
+      })
+      .catch((err) => console.log(err));
+    
+}
+
+  useEffect(()=>{
+    // if(image){
+    // console.log(sendImageToCloudinary(image))
+    // }
+  },[image])
   return (
     <>
     <div className="CreateProducts flex">
@@ -52,13 +98,14 @@ function CreateProducts() {
   >
     Category
   </label>
-  <input
+ {/* <input
     className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
     type="text"
     placeholder="Enter the category"
     id="category"
     required
-  ></input>
+ ></input>*/}
+<Category selected={category} setSelected={setCategory} productCategories={productCategories}/>
 </div>
 <div className="w-full mt-6">
 <label
@@ -119,12 +166,13 @@ function CreateProducts() {
   required
   onChange={(e)=>{
     loadFile(e)
-    console.log(e.target.files[0])
+    setImage(e.target.files[0])
   }}
   ref={imageRef}
 ></input>
   <img src="https://img.icons8.com/sf-black-filled/256/image.png" width={250} height={250} onClick={()=>imageRef.current.click()} alt="no prev" id='output'/>
-</div>
+
+  </div>
 <button
 type="submit"
 class="rounded-md bg-black mt-6 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
