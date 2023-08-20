@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import SellerNavbar from '../SellerNavbar/SellerNavbar'
-
 function CreateProducts() {
+  const imageRef=useRef()
+  const loadFile = (e) => {
+    let output = document.getElementById("output");
+    output.src = URL.createObjectURL(e.target.files[0]);
+    output.onload = () => {
+      URL.revokeObjectURL(output.src);
+    };
+  };
   return (
     <>
     <div className="CreateProducts flex">
@@ -14,12 +21,12 @@ function CreateProducts() {
         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         htmlFor="name"
       >
-        Name
+        Title
       </label>
       <input
         className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
         type="text"
-        placeholder="Enter your name"
+        placeholder="Enter product title"
         id="name"
         required
       ></input>
@@ -96,6 +103,27 @@ function CreateProducts() {
   id="quantity"
   required
 ></input>
+</div>
+<div className="w-full mt-6">
+<label
+  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+  htmlFor="quantity"
+>
+ Product Image
+</label>
+<input
+  className="hidden h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+  type="file"
+  accept='image/*'
+  id="image"
+  required
+  onChange={(e)=>{
+    loadFile(e)
+    console.log(e.target.files[0])
+  }}
+  ref={imageRef}
+></input>
+  <img src="https://img.icons8.com/sf-black-filled/256/image.png" width={250} height={250} onClick={()=>imageRef.current.click()} alt="no prev" id='output'/>
 </div>
 <button
 type="submit"
