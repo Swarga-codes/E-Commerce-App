@@ -43,4 +43,15 @@ const products=await PRODUCTS.find().sort({_id:-1}).populate("createdBy","shopNa
 if(!products) return res.status(500).json({error:'Could not fetch products, try again'})
 return res.status(200).json(products)
 }
-module.exports = { createProducts,displayProducts };
+
+
+//------------My Products---------------//
+const myProducts=async(req,res)=>{
+const products=await PRODUCTS.find({createdBy:req.seller._id}).sort({_id:-1})
+if(!products) return res.status(500).json({error:'Could not fetch products, try again'})
+return res.status(200).json(products)
+}
+
+
+
+module.exports = { createProducts,displayProducts,myProducts };
