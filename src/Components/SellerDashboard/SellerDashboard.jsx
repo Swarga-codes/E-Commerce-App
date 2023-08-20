@@ -4,9 +4,9 @@ import SellerNavbar from '../SellerNavbar/SellerNavbar'
 function SellerDashboard() {
   return (
     <>
+    <div className="Seller_Dashboard flex">
     <SellerNavbar/>
-    <div className="seller_dashboard">
-    Seller dashboard
+    <h1>Hello</h1>
     </div>
     </>
   )

@@ -14,7 +14,9 @@ module.exports=async(req,res,next)=>{
         req.user=userdata
         next()
     }
+    else{
     const sellerData=await SELLER.findById(_id)
     req.seller=sellerData
     next()
+    }
 }
