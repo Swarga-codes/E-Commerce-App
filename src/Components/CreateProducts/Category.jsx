@@ -71,9 +71,6 @@ function classNames(...classes) {
 
 export default function Category({selected,setSelected,productCategories}) {
   
- useEffect(()=>{
-    console.log(selected)
- },[selected])
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
