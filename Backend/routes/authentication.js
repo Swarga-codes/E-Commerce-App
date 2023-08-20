@@ -8,7 +8,6 @@ router.post('/user/register',registerUser)
 router.post('/user/login',loginUser)
 router.post('/seller/register',registerSeller)
 router.post('/seller/login',loginSeller)
-router.get('/protected',authorize,(req,res)=>res.status(200).send(req.seller))
 //update database
 // router.put('/update',async(req,res)=>{
 // const addField=await USER.updateMany({},{$set:{ordersList:[]}})

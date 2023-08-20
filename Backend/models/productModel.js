@@ -28,6 +28,10 @@ const productSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    createdBy:{
+        type:ObjectID,
+        ref:'SELLER'
+    },
     reviews:[
         {postedBy:{type:ObjectID,ref:'USER'},comment:{type:String}}
     ],
