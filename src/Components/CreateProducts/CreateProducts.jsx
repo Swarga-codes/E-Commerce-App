@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import SellerNavbar from "../SellerNavbar/SellerNavbar";
 import Category from "./Category";
 import { useNavigate } from "react-router-dom";
+import { Ring } from '@uiball/loaders'
+
 
 function CreateProducts() {
   const productCategories = [
@@ -17,6 +19,7 @@ function CreateProducts() {
   ];
   const imageRef = useRef();
   const navigator = useNavigate();
+  const [loader,setLoader]=useState(false);
   const [image, setImage] = useState("");
   const [hostedUrl, setHostedUrl] = useState("");
   const [title, setTitle] = useState("");
@@ -69,7 +72,9 @@ function CreateProducts() {
     const data = await response.json();
     if (data.error) {
       setError(data.error);
+      setLoader(false)
     } else {
+      setLoader(false)
       navigator("/seller/dashboard");
     }
   };
@@ -88,6 +93,7 @@ function CreateProducts() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              setLoader(true)
               sendImageToCloudinary()
             }}
           >
@@ -224,12 +230,26 @@ function CreateProducts() {
                 id="output"
               />
             </div>
+            {!loader?
             <button
               type="submit"
               class="rounded-md bg-black mt-6 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               Create Product
             </button>
+           :
+            <button
+            type="submit"
+            class="rounded-md bg-black mt-6 px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+          >
+          <Ring 
+          size={20}
+          lineWeight={5}
+          speed={2} 
+          color="white" 
+         />
+          </button>
+            }
           </form>
         </div>
       </div>
