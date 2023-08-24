@@ -1,4 +1,4 @@
-const BASE_URL="https://fakestoreapi.com/"
+const BASE_URL="http://localhost:5000/api"
 const fetchProducts=async(url)=>{
     const response=await fetch(`${BASE_URL}${url}`)
     const data=await response.json()

@@ -6,7 +6,7 @@ function Home() {
   
   useEffect(()=>{
    async function getProducts(){
-    setProducts(await fetchProducts('products'))
+    setProducts(await fetchProducts('/products/display'))
    }
    getProducts()
   
