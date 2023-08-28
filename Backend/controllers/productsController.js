@@ -54,17 +54,41 @@ return res.status(200).json(products)
 }
 
 //------------Add product to cart---------------//
-const addToCart=async(req,res)=>{
-  const {productId}=req.body
-  const isExistingProduct=await PRODUCTS.findById({_id:productId})
-  if(!isExistingProduct) return res.status(404).json({error:'Product Not Found'})
-  const updateUserCart=await USER.findByIdAndUpdate(req.user._id,{
-$push:{cartItems:productId}
-  },{
-    new:true
-  })
-  if(!updateUserCart) return res.status(500).json({error:'Could not update your cart'})
-  return res.status(200).json({updateUserCart})
-}
+const addToCart = async (req, res) => {
+  const { productId } = req.body;
+
+  if (!productId) {
+    return res.status(422).json({ error: 'Product ID cannot be empty' });
+  }
+
+  try {
+    const isExistingProduct = await PRODUCTS.findById(productId);
+
+    if (!isExistingProduct) {
+      return res.status(404).json({ error: 'Product Not Found' });
+    }
+
+    const user = await USER.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User Not Found' });
+    }
+
+    // Check if the product is already in the user's cart
+    if (user.cartItems.includes(productId)) {
+      return res.status(409).json({ error: 'Product already in cart' });
+    }
+
+    // Update the user's cart with the new product
+    user.cartItems.push(productId);
+    await user.save();
+
+    return res.status(200).json({ message: 'Product added to cart successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'An error occurred' });
+  }
+};
+
 
 module.exports = { createProducts,displayProducts,myProducts,addToCart };
