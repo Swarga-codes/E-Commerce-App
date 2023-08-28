@@ -1,4 +1,5 @@
-const PRODUCTS=require('../models/productModel')
+const PRODUCTS=require('../models/productModel');
+const USER = require('../models/userModel');
 
 //------------Create Products---------------//
 const createProducts = async(req, res) => {
@@ -52,6 +53,18 @@ if(!products) return res.status(500).json({error:'Could not fetch products, try 
 return res.status(200).json(products)
 }
 
+//------------Add product to cart---------------//
+const addToCart=async(req,res)=>{
+  const {productId}=req.body
+  const isExistingProduct=await PRODUCTS.findById({_id:productId})
+  if(!isExistingProduct) return res.status(404).json({error:'Product Not Found'})
+  const updateUserCart=await USER.findByIdAndUpdate(req.user._id,{
+$push:{cartItems:productId}
+  },{
+    new:true
+  })
+  if(!updateUserCart) return res.status(500).json({error:'Could not update your cart'})
+  return res.status(200).json({updateUserCart})
+}
 
-
-module.exports = { createProducts,displayProducts,myProducts };
+module.exports = { createProducts,displayProducts,myProducts,addToCart };

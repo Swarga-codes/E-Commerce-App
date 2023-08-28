@@ -49,23 +49,23 @@ export default function ProductDetails({isOpen,closeModal,details}) {
           <img
             alt="Nike Air Max 21A"
             className="h-64 w-full rounded object-contain lg:h-96 lg:w-1/2"
-        src={details.image}
+        src={details?.image}
             />
           <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:pl-10">
-  <h2 className="text-sm font-semibold tracking-widest text-gray-500">{details.category}</h2>
-            <h1 className="my-4 text-3xl font-semibold text-black text-left">{details.title}</h1>
+  <h2 className="text-sm font-semibold tracking-widest text-gray-500">#{details?.category}</h2>
+            <h1 className="my-4 text-3xl font-semibold text-black text-left">{details?.title}</h1>
             <div className="my-4 flex items-center">
               <span className="flex items-center space-x-1">
                 <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
 </svg>
-<p class="ml-2 text-sm font-bold text-gray-900 dark:text-black">{details.rating.rate}</p>
+<p class="ml-2 text-sm font-bold text-gray-900 dark:text-black">2.5</p>
 <span class="w-1 h-1 mx-1.5 bg-black rounded-full dark:text-black"></span>
-                <p className="ml-2 text-sm font-bold text-gray-900 dark:text-black">{details.rating.count} reviews</p>
+                <p className="ml-2 text-sm font-bold text-gray-900 dark:text-black">10 reviews</p>
               </span>
             </div>
-            <p className="leading-relaxed text-left">
-              {details.description}
+            <p className="leading-relaxed text-left" style={{'overflowWrap':'anywhere'}}>
+              {details?.description}
             </p>
             <div className="flex items-center justify-between mt-10">
               <span className="title-font text-xl font-bold text-gray-900">${details.price}</span>

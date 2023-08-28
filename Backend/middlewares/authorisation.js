@@ -2,6 +2,7 @@ const jwt=require('jsonwebtoken')
 const USER = require('../models/userModel')
 const SELLER = require('../models/sellerModel')
 module.exports=async(req,res,next)=>{
+    try{
     const {authorization}=req.headers
     if(!authorization) return res.status(403).json({error:'Could not authorize'})
     const token=authorization.replace("Bearer ","")
@@ -22,4 +23,11 @@ module.exports=async(req,res,next)=>{
     req.seller=sellerData
     next()
     }
+}
+catch(error){
+    if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token has expired, Please login' });
+      }
+      return res.status(500).json({message:'Internal server error'})
+}
 }
