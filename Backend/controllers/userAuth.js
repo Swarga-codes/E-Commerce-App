@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
     return res.status(422).json({ error: "Some fields are missing" });
   if (!validator.isEmail(email))
     return res.status(422).json({ error: "Please provide a valid email" });
-  const isExistingUser = await USER.findOne({ email: email });
+  const isExistingUser = await USER.findOne({ email: email })
   if (!isExistingUser)
     return res.status(404).json({ error: "User not found, please register" });
   const matchPassword = await bcrypt.compare(password, isExistingUser.password);

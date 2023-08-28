@@ -3,11 +3,19 @@ import LimitPara from '../../util/LimitPara'
 import { useSelector,useDispatch } from 'react-redux'
 import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
+import { fetchPOSTPUT } from '../../util/useFetch'
 function Products({details,idx}) {
  const[open,setOpen]=React.useState(false)
  const cart=useSelector(state=>state.cart)
  const dispatch=useDispatch()
- const addToCart=()=>{
+ const addToCart=async()=>{
+  const updateCart=await fetchPOSTPUT('/products/addToCart','PATCH','user_token',{productId:details._id})
+  console.log(updateCart)
+  if(!updateCart.error){
+    const updatedCart=JSON.parse(localStorage.getItem('user_data'))
+    updatedCart?.cartItems.push(details._id)
+    localStorage.setItem('user_data',JSON.stringify(updatedCart))
+  }
   dispatch(actions.addToCart(details))
  }
  const removeFromCart=()=>{
@@ -54,7 +62,8 @@ function Products({details,idx}) {
           <span className="block text-3xl font-semibold">${details.price}</span>
         
         </div>
-        {!cart.find(obj=>obj.title===details.title)?
+        {/*{!cart.find(obj=>obj.title===details.title)?*/}
+          {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems).includes(details._id)?
         <button
         type="button"
         className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"

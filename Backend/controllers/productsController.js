@@ -89,6 +89,11 @@ const addToCart = async (req, res) => {
     return res.status(500).json({ error: 'An error occurred' });
   }
 };
+//------------Get cart items---------------//
+const getCartItems=async(req,res)=>{
+  const cartItems=await USER.findById(req.user._id,{cartItems:1}).populate('cartItems','title price discountedPrice image')
+  if(!cartItems) return res.status(500).json({error:'Could not fetch cart data'})
+  return res.status(200).json(cartItems)
+}
 
-
-module.exports = { createProducts,displayProducts,myProducts,addToCart };
+module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems };

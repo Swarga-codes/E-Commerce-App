@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Products from '../Products/Products'
-import fetchProducts from '../../util/useFetch'
+import {fetchGET} from '../../util/useFetch'
 function Home() {
   const[products,setProducts]=useState([])
   
   useEffect(()=>{
    async function getProducts(){
-    setProducts(await fetchProducts('/products/display'))
+    setProducts(await fetchGET('/products/display'))
    }
    getProducts()
   
