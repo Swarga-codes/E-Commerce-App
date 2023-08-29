@@ -1,14 +1,24 @@
 import { Heart, Trash } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../../util/Store'
 import { ArrowRight } from 'lucide-react'
+import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
 export default function Cart() {
-  const cart=useSelector(state=>state.cart)
+  // const cart=useSelector(state=>state.cart)
+  const [cart,setCart]=useState([])
+  async function cartData(){
+    const data=await fetchGET('/products/cart','user_token')
+    setCart(data.cartItems)
+
+  }
   const dispatch=useDispatch()
   const removeFromCart=(title)=>{
     dispatch(actions.removeFromCart(title))
   }
+  useEffect(()=>{
+cartData()
+  },[])
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
       <div className="mx-auto max-w-2xl py-8 lg:max-w-7xl">
@@ -21,9 +31,9 @@ export default function Cart() {
               Items in your shopping cart
             </h2>
             <ul role="list" className="divide-y divide-gray-200">
-              {cart.length>0?
+              {JSON.parse(localStorage.getItem('user_data'))?.cartItems?.length>0?
                 cart.map((product, productIdx) => (
-                <div key={product.id} className="">
+                <div key={product._id} className="">
                   <li className="flex py-6 sm:py-6 ">
                     <div className="flex-shrink-0">
                       <img
@@ -107,8 +117,8 @@ export default function Cart() {
             <div>
               <dl className=" space-y-1 px-2 py-4">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm text-gray-800">Price ({cart.length} item)</dt>
-                  <dd className="text-sm font-medium text-gray-900">${cart.reduce((acc,curr)=>acc+curr.price,0).toFixed(2)}</dd>
+                  <dt className="text-sm text-gray-800">Price ({cart?.length} item)</dt>
+                  <dd className="text-sm font-medium text-gray-900">${cart?.reduce((acc,curr)=>acc+curr.price,0).toFixed(2)}</dd>
                 </div>
                 {/*<div className="flex items-center justify-between pt-4">
                   <dt className="flex items-center text-sm text-gray-800">

@@ -1,6 +1,12 @@
 const BASE_URL="http://localhost:5000/api"
-const fetchGET=async(url)=>{
-    const response=await fetch(`${BASE_URL}${url}`)
+const fetchGET=async(url,typeOfUser)=>{
+    const response=await fetch(`${BASE_URL}${url}`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem(typeOfUser)
+      }
+    })
     const data=await response.json()
     return data
   }

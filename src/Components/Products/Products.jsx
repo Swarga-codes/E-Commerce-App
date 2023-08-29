@@ -16,7 +16,7 @@ function Products({details,idx}) {
     updatedCart?.cartItems.push(details._id)
     localStorage.setItem('user_data',JSON.stringify(updatedCart))
   }
-  dispatch(actions.addToCart(details))
+  // dispatch(actions.addToCart(details))
  }
  const removeFromCart=()=>{
    dispatch(actions.removeFromCart(details.title))
@@ -63,7 +63,7 @@ function Products({details,idx}) {
         
         </div>
         {/*{!cart.find(obj=>obj.title===details.title)?*/}
-          {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems).includes(details._id)?
+          {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems)?.includes(details._id)?
         <button
         type="button"
         className="mt-4 w-full rounded-sm bg-black px-2 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
