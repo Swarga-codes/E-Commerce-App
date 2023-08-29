@@ -26,7 +26,7 @@ function Products({details,idx}) {
  }
   return (
     <>
-    <div className="mx-auto flex-shrink-0 flex-grow max-w-xs items-center px-2 py-10" style={{'overflowWrap':'anywhere'}}>
+    <div className="m-0 mr-5 flex-shrink-0 flex-grow max-w-xs items-center px-2 py-10" style={{'overflowWrap':'anywhere'}}>
     <div className="rounded-md border shadow-lg">
       <img
         src={details.image}
