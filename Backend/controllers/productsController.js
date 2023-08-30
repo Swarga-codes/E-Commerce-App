@@ -110,7 +110,7 @@ const removeCartItems=async(req,res)=>{
       return res.status(404).json({ error: 'Product Not Found' });
     }
 
-    const user = await USER.findById(req.user._id);
+    let user = await USER.findById(req.user._id);
 
     if (!user) {
       return res.status(404).json({ error: 'User Not Found' });
@@ -125,7 +125,7 @@ const removeCartItems=async(req,res)=>{
     }
 
     // Remove the target product from the user's cart 
-    user.cartItems.splice(user.cartItems.findIndex(idx=>idx===productId),1);
+   user.cartItems=user.cartItems.filter(cart=>cart!=productId)
     await user.save();
 
     return res.status(200).json({ message: 'Product removed from cart successfully' });
