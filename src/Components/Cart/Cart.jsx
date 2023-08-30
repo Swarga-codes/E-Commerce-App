@@ -32,7 +32,7 @@ cartData()
             </h2>
             <ul role="list" className="divide-y divide-gray-200">
               {JSON.parse(localStorage.getItem('user_data'))?.cartItems?.length>0?
-                cart.map((product, productIdx) => (
+                cart?.map((product, productIdx) => (
                 <div key={product._id} className="">
                   <li className="flex py-6 sm:py-6 ">
                     <div className="flex-shrink-0">

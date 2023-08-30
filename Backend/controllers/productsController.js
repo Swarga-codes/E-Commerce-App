@@ -96,4 +96,42 @@ const getCartItems=async(req,res)=>{
   return res.status(200).json(cartItems)
 }
 
-module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems };
+const removeCartItems=async(req,res)=>{
+  const { productId } = req.body;
+
+  if (!productId) {
+    return res.status(422).json({ error: 'Product ID cannot be empty' });
+  }
+
+  try {
+    const isExistingProduct = await PRODUCTS.findById(productId);
+
+    if (!isExistingProduct) {
+      return res.status(404).json({ error: 'Product Not Found' });
+    }
+
+    const user = await USER.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User Not Found' });
+    }
+    //Check if the cart is empty or not
+    if(user.cartItems.length===0){
+      return res.status(404).json({error:'Cart is empty'})
+    }
+    // Check if the product is already in the user's cart
+    if (!user.cartItems.includes(productId)) {
+      return res.status(409).json({ error: 'Product not present in cart' });
+    }
+
+    // Remove the target product from the user's cart 
+    user.cartItems.splice(user.cartItems.findIndex(idx=>idx===productId),1);
+    await user.save();
+
+    return res.status(200).json({ message: 'Product removed from cart successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'An error occurred' });
+  }
+}
+module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems,removeCartItems };
