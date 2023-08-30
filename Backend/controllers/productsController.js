@@ -96,6 +96,7 @@ const getCartItems=async(req,res)=>{
   return res.status(200).json(cartItems)
 }
 
+//------------Remove cart items---------------//
 const removeCartItems=async(req,res)=>{
   const { productId } = req.body;
 

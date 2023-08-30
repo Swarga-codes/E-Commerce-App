@@ -7,6 +7,7 @@ const mongoose=require('mongoose')
 const PORT=5000 ||  process.env.PORT
 const Authentication=require('./routes/authentication')
 const Products=require('./routes/products')
+const UserData=require('./routes/user')
 mongoose.connect(process.env.MONGO_URL)
 mongoose.connection.on('connected',()=>{
     console.log('Connected to mongodb')
@@ -20,6 +21,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/api/auth',Authentication)
 app.use('/api/products',Products)
+app.use('/api/users',UserData)
 app.get('/',(req,res)=>{
 res.send('Hello')
 })
