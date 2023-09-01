@@ -4,13 +4,18 @@ import { useSelector,useDispatch } from 'react-redux'
 import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
 import { fetchPOSTPUT } from '../../util/useFetch'
+import { useNavigate } from 'react-router-dom'
 function Products({details,idx}) {
  const[open,setOpen]=React.useState(false)
+ const navigator=useNavigate()
  const cart=useSelector(state=>state.cart)
  const dispatch=useDispatch()
  const addToCart=async()=>{
   const updateCart=await fetchPOSTPUT('/products/addToCart','PATCH','user_token',{productId:details._id})
   console.log(updateCart)
+  if(updateCart.message==="Token has expired, Please login"){
+    navigator('/users/login')
+  }
   if(!updateCart.error){
     const updatedCart=JSON.parse(localStorage.getItem('user_data'))
     updatedCart?.cartItems.push(details._id)

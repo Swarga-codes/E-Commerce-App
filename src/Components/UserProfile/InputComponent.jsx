@@ -1,10 +1,62 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { fetchPOSTPUT } from '../../util/useFetch'
 
-export function InputComponent() {
+export function InputComponent({image}) {
+    const userData=JSON.parse(localStorage.getItem('user_data'))
+    const [name,setName]=useState(userData?.name)
+    const [email,setEmail]=useState(userData?.email)
+    const [phoneNumber,setPhoneNumber]=useState(userData?.phoneNumber)
+    const [streetName,setStreetName]=useState(userData?.address?.streetName)
+    const [city,setCity]=useState(userData?.address?.city)
+    const [state,setState]=useState(userData?.address?.state)
+    const [country,setCountry]=useState(userData?.address?.country)
+    const [postalCode,setPostalCode]=useState(userData?.address?.postalCode)
+    const [update,setUpdate]=useState("")
+    let body={
+        email,
+        name,
+        phoneNumber,
+        address:{
+            streetName:streetName?streetName:userData?.address?.streetName,
+            city:city?city:userData?.address?.city,
+            state:state?state:userData?.address?.state,
+            country:country?country:userData?.address?.country,
+            postalCode:postalCode?postalCode:userData?.address?.postalCode
+        },
+        profilePic:image
+    }
+
+//     async function updateUser(){
+//         setUpdate(await fetchPOSTPUT('/users/updateUser','PATCH','user_token',body))
+        
+// }
+const updateUser=async()=>{
+const response=await fetch('http://localhost:5000/api/users/updateUser',{
+    method:'PATCH',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+localStorage.getItem('user_token')
+        },
+        body:JSON.stringify(
+          body
+        )
+      })
+      const data=await response.json()
+      
+      if(!data.error){
+        setUpdate(data)
+        localStorage.setItem('user_data',JSON.stringify(data.userData))
+      }
+}
+
   return (
+    <form onSubmit={(e)=>{
+        e.preventDefault()
+      updateUser()
+}}>
     <div className="border-b border-gray-900/10 pb-12">
     <p className="mt-1 text-sm leading-6 text-gray-600 font-semibold">Note: Your data will only be updated when you click the update button.</p>
-
+    <p className='font-semibold text-lime-500'>{update?.message?update?.message:update?.error}</p>
     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
       <div className="sm:col-span-3">
         <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -15,9 +67,11 @@ export function InputComponent() {
             type="text"
             name="first-name"
             id="first-name"
+            value={name}
             autoComplete="given-name"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+          onChange={(e)=>setName(e.target.value)}
+            />
         </div>
       </div>
 
@@ -30,9 +84,11 @@ export function InputComponent() {
             type="text"
             name="last-name"
             id="last-name"
+            value={phoneNumber}
             autoComplete="family-name"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setPhoneNumber(e.target.value)}
+            />
         </div>
       </div>
 
@@ -45,9 +101,11 @@ export function InputComponent() {
             id="email"
             name="email"
             type="email"
+            value={email}
             autoComplete="email"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setEmail(e.target.value)}
+            />
         </div>
       </div>
 
@@ -60,9 +118,11 @@ export function InputComponent() {
             type="text"
             name="street-address"
             id="street-address"
+            value={streetName}
             autoComplete="street-address"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setStreetName(e.target.value)}
+            />
         </div>
       </div>
 
@@ -75,8 +135,10 @@ export function InputComponent() {
             type="text"
             name="city"
             id="city"
+            value={city}
             autoComplete="address-level2"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setCity(e.target.value)}
           />
         </div>
       </div>
@@ -90,8 +152,10 @@ export function InputComponent() {
             type="text"
             name="region"
             id="region"
+            value={state}
             autoComplete="address-level1"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setState(e.target.value)}
           />
         </div>
       </div>
@@ -103,9 +167,11 @@ export function InputComponent() {
         <input
           id="country"
           name="country"
+          value={country}
           autoComplete="country-name"
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-        />
+          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
+          onChange={(e)=>setCountry(e.target.value)}
+          />
           
       </div>
     </div>
@@ -118,8 +184,10 @@ export function InputComponent() {
             type="text"
             name="postal-code"
             id="postal-code"
+            value={postalCode}
             autoComplete="postal-code"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+            onChange={(e)=>setPostalCode(e.target.value)}
           />
         </div>
       </div>
@@ -137,6 +205,6 @@ export function InputComponent() {
     </button>
   </div>
   </div>
-
+  </form>
   )
 }

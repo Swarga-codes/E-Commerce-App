@@ -23,6 +23,7 @@ const fetchPOSTPUT=async(url,method,typeOfUser,body)=>{
     )
   })
   const data=await response.json()
+  console.log(data)
   return data
 
 }
