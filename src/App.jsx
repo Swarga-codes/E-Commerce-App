@@ -10,6 +10,7 @@ import SellerRegister from './Components/SellerRegister/SellerRegister'
 import SellerDashboard from './Components/SellerDashboard/SellerDashboard'
 import CreateProducts from './Components/CreateProducts/CreateProducts'
 import MyProducts from './Components/MyProducts/MyProducts'
+import UserProfile from './Components/UserProfile/UserProfile'
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
     <Route exact path='/seller/dashboard' element={<SellerDashboard/>}/>
     <Route exact path='/seller/products/create' element={<CreateProducts/>}/>
     <Route exact path='/seller/myproducts' element={<MyProducts/>}/>
+    <Route exact path='/user/profile' element={<UserProfile/>}/>
 </Routes>
     </>      
   )
