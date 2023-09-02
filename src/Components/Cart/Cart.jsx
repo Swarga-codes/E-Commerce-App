@@ -8,19 +8,28 @@ export default function Cart() {
   // const cart=useSelector(state=>state.cart)
   const [cart,setCart]=useState([])
   async function cartData(){
-    const data=await fetchGET('/products/cart','user_token')
+    const data=await fetchGET('/products/cart','GET','user_token')
     setCart(data.cartItems)
     // await dispatch(actions.addToCart(data.cartItems[0]))
-    console.log(cart)
 
   }
   const dispatch=useDispatch()
-  const removeFromCart=(title)=>{
-    dispatch(actions.removeFromCart(title))
+  const removeFromCart=async(prod)=>{
+    const removeFromCart=await fetchPOSTPUT('/products/removeFromCart','PATCH','user_token',{productId:prod._id})
+    if(removeFromCart.message=="Token has expired, Please login"){
+      return navigator('/users/login')
+    }
+    if(removeFromCart.message){
+      let updatedCart = JSON.parse(localStorage.getItem('user_data'));
+      updatedCart.cartItems = updatedCart?.cartItems?.filter(item => item !== prod._id);
+      localStorage.setItem('user_data', JSON.stringify(updatedCart));
+  
+    }
+     dispatch(actions.removeFromCart(prod))
   }
   useEffect(()=>{
 cartData()
-  },[])
+  },[cart])
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
       <div className="mx-auto max-w-2xl py-8 lg:max-w-7xl">
@@ -92,7 +101,7 @@ cartData()
                       </button>
                 </div>*/}
                     <div className="ml-6 flex text-sm">
-                      <button type="button" onClick={()=>removeFromCart(product.title)} className="flex items-center space-x-1 px-2 py-1 pl-0">
+                      <button type="button" onClick={()=>removeFromCart(product)} className="flex items-center space-x-1 px-2 py-1 pl-0">
                         <Trash size={12} className="text-red-500" />
                         <span className="text-xs font-medium text-red-500">Remove</span>
                       </button>

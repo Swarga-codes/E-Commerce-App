@@ -31,8 +31,6 @@ function Products({details,idx}) {
   }
   if(removeFromCart.message){
     let updatedCart = JSON.parse(localStorage.getItem('user_data'));
-    console.log('Previous Cart:', updatedCart);
-
     updatedCart.cartItems = updatedCart?.cartItems?.filter(item => item !== details._id);
     localStorage.setItem('user_data', JSON.stringify(updatedCart));
 
