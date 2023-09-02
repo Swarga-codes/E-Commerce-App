@@ -10,6 +10,8 @@ export default function Cart() {
   async function cartData(){
     const data=await fetchGET('/products/cart','user_token')
     setCart(data.cartItems)
+    // await dispatch(actions.addToCart(data.cartItems[0]))
+    console.log(cart)
 
   }
   const dispatch=useDispatch()

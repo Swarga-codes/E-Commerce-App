@@ -3,7 +3,7 @@ import LimitPara from '../../util/LimitPara'
 import { useSelector,useDispatch } from 'react-redux'
 import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
-import { fetchPOSTPUT } from '../../util/useFetch'
+import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
 import { useNavigate } from 'react-router-dom'
 function Products({details,idx}) {
  const[open,setOpen]=React.useState(false)
@@ -13,7 +13,7 @@ function Products({details,idx}) {
  const addToCart=async()=>{
   const updateCart=await fetchPOSTPUT('/products/addToCart','PATCH','user_token',{productId:details._id})
   console.log(updateCart)
-  if(updateCart.message==="Token has expired, Please login"){
+  if(updateCart.message=="Token has expired, Please login"){
     navigator('/users/login')
   }
   if(!updateCart.error){
@@ -21,10 +21,23 @@ function Products({details,idx}) {
     updatedCart?.cartItems.push(details._id)
     localStorage.setItem('user_data',JSON.stringify(updatedCart))
   }
-  // dispatch(actions.addToCart(details))
+  dispatch(actions.addToCart(details))
  }
- const removeFromCart=()=>{
-   dispatch(actions.removeFromCart(details.title))
+ const removeFromCart=async()=>{
+  const removeFromCart=await fetchPOSTPUT('/products/removeFromCart','PATCH','user_token',{productId:details._id})
+  console.log(removeFromCart)
+  if(removeFromCart.message=="Token has expired, Please login"){
+    return navigator('/users/login')
+  }
+  if(removeFromCart.message){
+    let updatedCart = JSON.parse(localStorage.getItem('user_data'));
+    console.log('Previous Cart:', updatedCart);
+
+    updatedCart.cartItems = updatedCart?.cartItems?.filter(item => item !== details._id);
+    localStorage.setItem('user_data', JSON.stringify(updatedCart));
+
+  }
+   dispatch(actions.removeFromCart(details))
  }
  function closeModal(){
   setOpen(false)

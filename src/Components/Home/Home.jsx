@@ -7,7 +7,7 @@ function Home() {
 
   useEffect(() => {
     async function getProducts() {
-      setProducts(await fetchGET('/products/display'));
+      setProducts(await fetchGET('/products/display','GET'));
     }
     getProducts();
   }, []);
