@@ -3,15 +3,15 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { actions } from '../../util/Store'
-export default function ProductDetails({isOpen,closeModal,details}) {
+export default function ProductDetails({isOpen,closeModal,details,remove,add}) {
   const cart=useSelector(state=>state.cart)
   const dispatch=useDispatch()
-  const addToCart=()=>{
-   dispatch(actions.addToCart(details))
-  }
-  const removeFromCart=()=>{
-    dispatch(actions.removeFromCart(details.title))
-  }
+  // const addToCart=()=>{
+  //  dispatch(actions.addToCart(details))
+  // }
+  // const removeFromCart=()=>{
+  //   dispatch(actions.removeFromCart(details.title))
+  // }
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center">
@@ -69,18 +69,18 @@ export default function ProductDetails({isOpen,closeModal,details}) {
             </p>
             <div className="flex items-center justify-between mt-10">
               <span className="title-font text-xl font-bold text-gray-900">${details.price}</span>
-              {!cart.find(obj=>obj.title===details.title)?
+              {!JSON.parse(localStorage.getItem('user_data'))?.cartItems?.includes(details._id)?
               <button
                 type="button"
                 className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-             onClick={()=>addToCart()} >
+             onClick={()=>add()} >
                 Add to Cart
               </button>
               :
               <button
                 type="button"
                 className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-             onClick={()=>removeFromCart()} >
+             onClick={()=>remove()} >
                 Remove from Cart
               </button>
               }

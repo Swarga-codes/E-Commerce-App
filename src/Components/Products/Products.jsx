@@ -100,7 +100,7 @@ function Products({details,idx}) {
     </div>
  
     </div>
-    {open && <ProductDetails details={details} isOpen={open} closeModal={closeModal}/>}
+    {open && <ProductDetails details={details} remove={removeFromCart} add={addToCart} isOpen={open} closeModal={closeModal}/>}
    </>
   )
 }

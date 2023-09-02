@@ -20,6 +20,10 @@ const ordersSchema=new mongoose.model({
         type:Number,
         required:true
     },
+    orderType:{
+        type:String,
+        required:true
+    },
     isComplete:{
         type:Boolean,
         default:false
