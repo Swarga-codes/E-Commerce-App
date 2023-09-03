@@ -1,49 +1,27 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { X,MoveRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { fetchGET } from '../../util/useFetch'
 
-const products = [
-  {
-    id: 1,
-    name: 'Nike Air Force 1 07 LV8',
-    href: '#',
-    price: '₹47,199',
-    originalPrice: '₹48,900',
-    discount: '5% Off',
-    color: 'Orange',
-    size: '8 UK',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/54a510de-a406-41b2-8d62-7f8c587c9a7e/air-force-1-07-lv8-shoes-9KwrSk.png',
-  },
-  {
-    id: 2,
-    name: 'Nike Blazer Low 77 SE',
-    href: '#',
-    price: '₹1,549',
-    originalPrice: '₹2,499',
-    discount: '38% off',
-    color: 'White',
-    leadTime: '3-4 weeks',
-    size: '8 UK',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e48d6035-bd8a-4747-9fa1-04ea596bb074/blazer-low-77-se-shoes-0w2HHV.png',
-  },
-  {
-    id: 3,
-    name: 'Nike Air Max 90',
-    href: '#',
-    price: '₹2219 ',
-    originalPrice: '₹999',
-    discount: '78% off',
-    color: 'Black',
-    imageSrc:
-      'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/fd17b420-b388-4c8a-aaaa-e0a98ddf175f/dunk-high-retro-shoe-DdRmMZ.png',
-  },
-]
-
+import Category from '../CreateProducts/Category'
 export default function CheckoutPage() {
+  const typeOfPayment=[
+    "Cash On Delivery",
+    "UPI"
+  ]
     const userInfo=JSON.parse(localStorage.getItem('user_data'))
     const navigator=useNavigate()
+    const [cart,setCart]=useState([])
+    const [orderType,setOrderType]=useState(typeOfPayment[0])
+    async function cartData(){
+      const data=await fetchGET('/products/cart','GET','user_token')
+      setCart(data.cartItems)
+      // await dispatch(actions.addToCart(data.cartItems[0]))
+  
+    }
+    useEffect(()=>{
+      cartData()
+    },[])
   return (
     <>
     <h1 className='text-3xl px-4 py-2 mx-auto font-bold mt-5'>Checkout Page</h1>
@@ -109,25 +87,38 @@ export default function CheckoutPage() {
                       <hr className="my-8" />
                       <div className="mt-10">
                         <h3 className="text-lg font-semibold text-gray-900">Payment details</h3>
-
+                        <div className="w-full mt-6">
+                        <label
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          htmlFor="category"
+                        >
+                          Payment Type
+                        </label>
+                        <Category
+                          selected={orderType}
+                          setSelected={setOrderType}
+                          productCategories={typeOfPayment}
+                        />
+                      </div>
                         <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4">
-                          <div className="col-span-3 sm:col-span-4">
+                      
+                          {orderType==='UPI' && <div className="col-span-3 sm:col-span-4">
                             <label
                               htmlFor="cardNum"
                               className="block text-sm font-medium text-gray-700"
                             >
-                              Card number
+                              UPI ID
                             </label>
                             <div className="mt-1">
                               <input
                                 className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                 type="text"
-                                placeholder="4242 4242 4242 4242"
+                                placeholder="Enter your UPI ID"
                                 id="cardNum"
                               ></input>
                             </div>
-                          </div>
-                          <div className="col-span-2 sm:col-span-3">
+                          </div>}
+                         {/* <div className="col-span-2 sm:col-span-3">
                             <label
                               htmlFor="expiration-date"
                               className="block text-sm font-medium text-gray-700"
@@ -161,7 +152,7 @@ export default function CheckoutPage() {
                                 className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                               />
                             </div>
-                          </div>
+  </div>*/}
                         </div>
                       </div>
                       <hr className="my-8" />
@@ -281,6 +272,7 @@ export default function CheckoutPage() {
                         <h3 className="text-lg font-semibold text-gray-900">Billing information</h3>
 
                         <div className="mt-6 flex items-center">
+                       
                           <input
                             id="same-as-shipping"
                             name="same-as-shipping"
@@ -318,31 +310,31 @@ export default function CheckoutPage() {
           <div className="bg-gray-100 px-5 py-6 md:px-8">
             <div className="flow-root">
               <ul className="-my-7 divide-y divide-gray-200">
-                {products.map((product) => (
+                {cart?.map((product) => (
                   <li
-                    key={product.id}
+                    key={product._id}
                     className="flex items-stretch justify-between space-x-5 py-7"
                   >
                     <div className="flex flex-1 items-stretch">
                       <div className="flex-shrink-0">
                         <img
                           className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-contain"
-                          src={product.imageSrc}
-                          alt={product.imageSrc}
+                          src={product?.image}
+                          alt="no preview"
                         />
                       </div>
                       <div className="ml-5 flex flex-col justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-bold">{product.name}</p>
+                          <p className="text-sm font-bold">{product?.title}</p>
                           <p className="mt-1.5 text-sm font-medium text-gray-500">
-                            {product.color}
+                            #{product?.category}
                           </p>
                         </div>
                        {/* <p className="mt-4 text-xs font-medium ">x 1</p>*/}
                       </div>
                     </div>
                     <div className="ml-auto flex flex-col items-end justify-between">
-                      <p className="text-right text-sm font-bold text-gray-900">{product.price}</p>
+                      <p className="text-right text-sm font-bold text-gray-900">${product?.price}</p>
                     {/*  <button
                         type="button"
                         className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
@@ -376,13 +368,13 @@ export default function CheckoutPage() {
               </div>
                 </form>*/}
             <ul className="mt-6 space-y-3">
-              <li className="flex items-center justify-between text-gray-600">
+            {/*  <li className="flex items-center justify-between text-gray-600">
                 <p className="text-sm font-medium">Sub total</p>
                 <p className="text-sm font-medium">₹1,14,399</p>
-              </li>
+              </li>*/}
               <li className="flex items-center justify-between text-gray-900">
                 <p className="text-sm font-medium ">Total</p>
-                <p className="text-sm font-bold ">₹1,14,399</p>
+                <p className="text-sm font-bold ">${cart?.reduce((acc,curr)=>acc+curr.price,0)}</p>
               </li>
             </ul>
           </div>

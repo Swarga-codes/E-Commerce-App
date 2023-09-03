@@ -91,7 +91,7 @@ const addToCart = async (req, res) => {
 };
 //------------Get cart items---------------//
 const getCartItems=async(req,res)=>{
-  const cartItems=await USER.findById(req.user._id,{cartItems:1}).populate('cartItems','title price discountedPrice image')
+  const cartItems=await USER.findById(req.user._id,{cartItems:1}).populate('cartItems','title price discountedPrice image category')
   if(!cartItems) return res.status(500).json({error:'Could not fetch cart data'})
   return res.status(200).json(cartItems)
 }
