@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../../util/Store'
 import { ArrowRight } from 'lucide-react'
 import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
+import { useNavigate } from 'react-router-dom'
 export default function Cart() {
   // const cart=useSelector(state=>state.cart)
+  const navigator=useNavigate()
   const [cart,setCart]=useState([])
   async function cartData(){
     const data=await fetchGET('/products/cart','GET','user_token')
@@ -155,7 +157,8 @@ cartData()
         <button
         type="button"
         className="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white hover:bg-black/80"
-      >
+      onClick={()=>navigator('/cart/checkout')}
+        >
         Proceed to Checkout
         <ArrowRight className="ml-2 h-4 w-4" />
       </button>
