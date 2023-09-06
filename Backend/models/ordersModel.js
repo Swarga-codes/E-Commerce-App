@@ -24,6 +24,13 @@ const ordersSchema=new mongoose.model({
         type:String,
         required:true
     },
+    address:{
+        streetName:{type:String},
+        city:{type:String},
+        state:{type:String},
+        country:{type:String},
+        postalCode:{type:Number}
+    },
     isComplete:{
         type:Boolean,
         default:false
