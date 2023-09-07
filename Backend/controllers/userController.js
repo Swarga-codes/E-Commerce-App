@@ -32,9 +32,9 @@ return res.status(200).json({message:'User details updated successfully', userDa
     profilePic,
   }})
 }
-//------------Place Order---------------//
+// ------------Place Order---------------//
 const createOrder=async(req,res)=>{
-  const {orderItems,sellersID,orderAmount,address,orderType}=req.body
+  const {orderItems,sellersID,orderAmount,orderType}=req.body
   if(orderItems.length===0 || sellersID.length===0 || !orderAmount || !orderType){
     return res.status(400).json({error:'Please include the required fields'})
   }

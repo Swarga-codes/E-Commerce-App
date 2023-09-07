@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const {ObjectID}=mongoose.Schema.Types
-const ordersSchema=new mongoose.model({
+const ordersSchema=new mongoose.Schema({
     orderItems:[
         {
            type:ObjectID,
