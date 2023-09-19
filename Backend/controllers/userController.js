@@ -35,24 +35,26 @@ return res.status(200).json({message:'User details updated successfully', userDa
 }
 // ------------Place Order---------------//
 const createOrder=async(req,res)=>{
-  const {orderItems,sellersID,orderAmount,orderType}=req.body
-  if(orderItems?.length===0 || sellersID?.length===0 || !orderAmount || !orderType){
+  const {orderItems,orderAmount,orderType}=req.body
+  if(orderItems?.length===0 || !orderAmount || !orderType){
     return res.status(400).json({error:'Please include the required fields'})
   }
   //Checking the order items
   let checkAmt=0
+  const sellersID=[]
   for(let i=0;i<orderItems.length;i++){
-    let currItem=await PRODUCTS.findOne({_id:orderItems[i]})
+    let currItem=await PRODUCTS.findById(orderItems[i])
     if(!currItem) return res.status(404).json({error:'Item does not exist'})
-    if(!sellersID.includes(currItem?.createdBy)) return res.status(404).json({error:'Seller not found for the product'})
+    // if(!(sellersID.includes(currItem.createdBy))) return res.status(404).json({error:'Seller not found for the product'})
+  sellersID.push(currItem.createdBy)
     if(currItem?.quantity<=0) return res.status(422).json({error:'One or more Item(s) is out of stock!'})
-    checkAmt+=currItem?.price;
+    checkAmt+=currItem.price;
   }
   //Check whether the price is fine or not
-  if(checkAmt===orderAmount) return res.status(400).json({error:'Order Amount inappropriate'})
+  if(checkAmt!==orderAmount) return res.status(400).json({error:'Order Amount inappropriate'})
 //Checking the sellers ID
-const checkSellerId=await SELLER.find({_id:{$in:sellersID}}).toArray()
-if(checkSellerId?.length!==sellersID?.length) return res.status(404).json({error:'One or more sellers not found!'})
+// const checkSellerId=await SELLER.find({_id:{$in:sellersID}})
+// if(checkSellerId?.length!==sellersID?.length) return res.status(404).json({error:'One or more sellers not found!'})
 if(orderType==='Cash On Delivery'){
 const newOrder=await new ORDER({
   orderItems,
