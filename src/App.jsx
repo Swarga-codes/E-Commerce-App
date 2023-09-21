@@ -12,6 +12,7 @@ import CreateProducts from './Components/CreateProducts/CreateProducts'
 import MyProducts from './Components/MyProducts/MyProducts'
 import UserProfile from './Components/UserProfile/UserProfile'
 import CheckoutPage from './Components/CheckoutPage/CheckoutPage'
+import OrderPlaced from './Components/OrderPlaced/OrderPlaced'
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
     <Route exact path='/seller/myproducts' element={<MyProducts/>}/>
     <Route exact path='/user/profile' element={<UserProfile/>}/>
     <Route exact path='/cart/checkout' element={<CheckoutPage/>}/>
+    <Route exact path='/cart/checkout/orderplaced' element={<OrderPlaced/>}/>
 </Routes>
     </>      
   )

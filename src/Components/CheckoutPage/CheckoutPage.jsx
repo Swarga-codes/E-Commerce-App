@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { X,MoveRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { fetchGET } from '../../util/useFetch'
+import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
 
 import Category from '../CreateProducts/Category'
 export default function CheckoutPage() {
@@ -18,6 +18,23 @@ export default function CheckoutPage() {
       setCart(data.cartItems)
       // await dispatch(actions.addToCart(data.cartItems[0]))
   
+    }
+    async function placeOrder(){
+      const orderItems=cart.map(item=>item._id)
+      const body={
+        orderItems,
+        orderAmount:cart?.reduce((acc,curr)=>acc+curr.price,0),
+        orderType,
+        address:JSON.parse(localStorage.getItem('user_data'))?.address
+      }
+      const data=await fetchPOSTPUT('/users/createOrder','POST','user_token',body)
+   console.log(data)
+   if(!data.error){
+    const updateData=JSON.parse(localStorage.getItem('user_data'))
+    updateData.cartItems=[]
+    localStorage.setItem('user_data',JSON.stringify(updateData))
+    navigator('/cart/checkout/orderplaced')
+   }
     }
     useEffect(()=>{
       cartData()
@@ -295,7 +312,10 @@ export default function CheckoutPage() {
                         <button
                           type="button"
                           className="flex rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                        >
+                        onClick={()=>{
+                          placeOrder()
+                        }}
+                          >
                           Place Order
                           <span className="ml-2"><MoveRight /></span> 
                         </button>
