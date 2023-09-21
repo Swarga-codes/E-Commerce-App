@@ -52,9 +52,6 @@ const createOrder=async(req,res)=>{
   }
   //Check whether the price is fine or not
   if(checkAmt!==orderAmount) return res.status(400).json({error:'Order Amount inappropriate'})
-//Checking the sellers ID
-// const checkSellerId=await SELLER.find({_id:{$in:sellersID}})
-// if(checkSellerId?.length!==sellersID?.length) return res.status(404).json({error:'One or more sellers not found!'})
 if(orderType==='Cash On Delivery'){
 const newOrder=await new ORDER({
   orderItems,
@@ -81,7 +78,7 @@ for(let i=0;i<sellersID.length;i++){
   if(!seller) return res.status(500).json({error:'Could not update seller orders list'})
 }
 //update users orders list
-const updateUserOrderListAndCart=await USER.updateOne({_id:req.user._id},{$push:{ordersList:orderPlaced._id,cartItems:[]}},{new:true})
+const updateUserOrderListAndCart=await USER.updateOne({_id:req.user._id},{$push:{ordersList:orderPlaced._id},$set:{cartItems:[]}},{new:true})
 if(!updateUserOrderListAndCart) return res.status(500).json({error:'Could not update user orders list and cart'})
 return res.status(200).json({message:'Order Placed Successfully'})
 }
