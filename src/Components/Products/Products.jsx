@@ -5,6 +5,7 @@ import { actions } from '../../util/Store'
 import ProductDetails from '../ProductDetails/ProductDetails'
 import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 function Products({details,idx}) {
  const[open,setOpen]=React.useState(false)
  const navigator=useNavigate()
@@ -13,14 +14,19 @@ function Products({details,idx}) {
  const addToCart=async()=>{
   const updateCart=await fetchPOSTPUT('/products/addToCart','PATCH','user_token',{productId:details._id})
   console.log(updateCart)
+ 
   if(updateCart.message=="Token has expired, Please login"){
     navigator('/users/login')
+    toast.error(updateCart.message)
+   
   }
   if(!updateCart.error){
     const updatedCart=JSON.parse(localStorage.getItem('user_data'))
     updatedCart?.cartItems.push(details._id)
     localStorage.setItem('user_data',JSON.stringify(updatedCart))
+    toast.success(updateCart.message)
   }
+ 
   dispatch(actions.addToCart(details))
  }
  const removeFromCart=async()=>{

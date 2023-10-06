@@ -13,10 +13,13 @@ import MyProducts from './Components/MyProducts/MyProducts'
 import UserProfile from './Components/UserProfile/UserProfile'
 import CheckoutPage from './Components/CheckoutPage/CheckoutPage'
 import OrderPlaced from './Components/OrderPlaced/OrderPlaced'
+import MyOrders from './Components/MyOrders/MyOrders'
+import { Toaster } from 'react-hot-toast'
 function App() {
 
   return (
     <>
+    <div><Toaster/></div>
     <Routes>
     <Route exact path='/' element={<Home/>}/>
     <Route exact path='/cart' element={<Cart/>}/>
@@ -30,6 +33,7 @@ function App() {
     <Route exact path='/user/profile' element={<UserProfile/>}/>
     <Route exact path='/cart/checkout' element={<CheckoutPage/>}/>
     <Route exact path='/cart/checkout/orderplaced' element={<OrderPlaced/>}/>
+    <Route exact path='/users/myorders' element={<MyOrders/>}/>
 </Routes>
     </>      
   )
