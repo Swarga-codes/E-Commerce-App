@@ -13,6 +13,7 @@ function MyOrders() {
     const data=await response.json()
     setOrders(data)
     console.log(data)
+    // console.log(data[0].sellersID[0].shopName)
   }
   useEffect(()=>{
     getMyOrders()
@@ -97,15 +98,15 @@ function MyOrders() {
               </th>
               
               </tr>
-             {order?.orderItems?.map(item=>(
+             {order?.orderItems?.map((item,idx)=>(
 
             <tr>
                 <td class="whitespace-nowrap px-4 py-4">
                   <div class="flex items-center">
                     <div class="h-10 w-10 flex-shrink-0">
                       <img
-                        class="h-10 w-10 rounded-full object-cover"
-                        src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1160&amp;q=80"
+                        class="h-10 w-10 rounded-md object-cover"
+                        src={item?.image}
                         alt=""
                       />
                     </div>
@@ -118,7 +119,7 @@ function MyOrders() {
                   </div>
                 </td>
                 <td class="whitespace-nowrap px-12 py-4">
-                  <div class="text-sm text-gray-900">Front-end Developer</div>
+                  <div class="text-sm text-gray-900">{order?.sellersID[idx]?.shopName}</div>
                   {/*<div class="text-sm text-gray-500">Engineering</div>*/}
                 </td>
                {order.isComplete?
