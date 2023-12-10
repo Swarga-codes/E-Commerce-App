@@ -86,4 +86,9 @@ if(orderType==='UPI'){
   return res.status(422).json({error:'Currently under development please try COD'})
 }
 }
-module.exports={updateUserData,createOrder}
+// ------------Get Order Details for current USER---------------//
+const getUserOrders=async(req,res)=>{
+  const orders=await ORDER.find({orderedBy:req.user._id})
+  return res.status(200).json(orders)
+}
+module.exports={updateUserData,createOrder,getUserOrders}
