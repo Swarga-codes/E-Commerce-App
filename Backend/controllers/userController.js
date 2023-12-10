@@ -88,7 +88,7 @@ if(orderType==='UPI'){
 }
 // ------------Get Order Details for current USER---------------//
 const getUserOrders=async(req,res)=>{
-  const orders=await ORDER.find({orderedBy:req.user._id})
+  const orders=await ORDER.find({orderedBy:req.user._id}).populate('orderItems').populate('sellersID')
   return res.status(200).json(orders)
 }
 module.exports={updateUserData,createOrder,getUserOrders}
