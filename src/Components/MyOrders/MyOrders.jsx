@@ -91,6 +91,7 @@ function MyOrders() {
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
+            {orders?.length===0 && <h2 className='p-10 text-xl'>No Order History!</h2>}
              {orders?.map(order=>(
 
             <>
