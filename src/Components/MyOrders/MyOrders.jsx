@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import convertTimestampToFormattedDate from '../../util/dateFormatter'
+import toast from 'react-hot-toast'
 function MyOrders() {
   const [orders,setOrders]=useState([])
+  const [cancelOrderCount,setCancelOrderCount]=useState(0);
+  //fetch orders data for current user
   const getMyOrders=async()=>{
     const response=await fetch('http://localhost:5000/api/users/orders',{
       method:'GET',
@@ -12,12 +15,27 @@ function MyOrders() {
     })
     const data=await response.json()
     setOrders(data)
-    console.log(data)
-    // console.log(data[0].sellersID[0].shopName)
+  }
+  const cancelOrder=async(orderID)=>{
+    const response=await fetch(`http://localhost:5000/api/users/orders/delete/${orderID}`,{
+      method:'DELETE',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem('user_token')
+      }
+    })
+    const data=await response.json()
+    if(data.error){
+      toast.error(data.error)
+    }
+    else{
+      toast.success(data.message)
+      setCancelOrderCount(updateCount=>updateCount+1)
+    }
   }
   useEffect(()=>{
     getMyOrders()
-  },[])
+  },[cancelOrderCount])
   return (
     <section class="mx-auto w-full max-w-7xl px-4 py-4">
   <div class="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
@@ -92,7 +110,12 @@ function MyOrders() {
               <button
               type="button"
               className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-            >
+              onClick={()=>{
+                if(window.confirm('Do you wish to cancel your order?')){
+                cancelOrder(order._id)
+                }
+              }}
+              >
              Cancel Order
             </button>
               </th>
