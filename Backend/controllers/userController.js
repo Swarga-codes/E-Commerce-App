@@ -91,4 +91,25 @@ const getUserOrders=async(req,res)=>{
   const orders=await ORDER.find({orderedBy:req.user._id}).populate('orderItems').populate('sellersID').sort({createdAt:-1})
   return res.status(200).json(orders)
 }
-module.exports={updateUserData,createOrder,getUserOrders}
+// ------------DELETE ORDER---------------//
+const deleteOrder=async(req,res)=>{
+  try{
+  const orders=await ORDER.find({_id:req.params.orderID})
+  if(orders.length===0) return res.status(404).json({error:'Order not found!'})
+  if(orders[0].orderedBy+""!==req.user._id+"") return res.status(403).json({error:'User cannot perform this action!'})
+  for(let i=0;i<orders[0].orderItems.length;i++){
+   const currentItem=await PRODUCTS.findOne({_id:orders[0].orderItems[i]})
+   currentItem.quantity+=1
+   const updateCurrentItem=await PRODUCTS.updateOne({_id:orders[0].orderItems[i]},{$set:{quantity:currentItem.quantity}},{new:true})
+   if(!updateCurrentItem) return res.status(500).json({error:'Could not update product data, try again!'})
+  }
+  const delOrder=await ORDER.findByIdAndDelete(req.params.orderID)
+  if(!delOrder) return res.status(500).json({error:'Could not delete the order, try again!'})
+  return res.status(200).json({message:'Order deleted successfully'})
+  }
+  catch(err){
+    return res.status(500).json({error:'Internal Server Error'})
+  }
+
+}
+module.exports={updateUserData,createOrder,getUserOrders,deleteOrder}
