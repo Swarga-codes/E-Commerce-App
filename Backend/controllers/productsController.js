@@ -135,4 +135,20 @@ const removeCartItems=async(req,res)=>{
     return res.status(500).json({ error: 'An error occurred' });
   }
 }
-module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems,removeCartItems };
+
+//------------Delete product---------------//
+const deleteProduct=async(req,res)=>{
+  try{
+  const product=await PRODUCTS.find({_id:req.params.productID})
+  if(product.length===0) return res.status(404).json({error:'Product not found'})
+  if(product[0].createdBy+""!==req.seller._id+"") return res.status(403).json({error:'User not authorized to perform this action!'})
+  const deleteProduct=await PRODUCTS.findByIdAndDelete(req.params.productID)
+  if(!deleteProduct) return res.status(500).json({error:'Could not delete product, try again!'})
+  return res.status(200).json({message:'Product deleted successfully!'})
+  }
+catch(error){
+  return res.status(500).json({error:'Internal Server Error'})
+}
+}
+
+module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems,removeCartItems,deleteProduct };
