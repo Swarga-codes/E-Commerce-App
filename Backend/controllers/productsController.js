@@ -151,14 +151,15 @@ for(let i=0;i<findCurrentProductInOrders.length;i++){
     }
     else{
       //remove the seller and product
-      const updateOrderItems=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{orderItems:req.params.productID,sellersID:product.createdBy}})
+      const updateOrderItems=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{orderItems:req.params.productID}})
+      const updateOrderItemsSeller=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{sellersID:{id:product.createdBy}}})
     }
   }
 }
 
-  // const deleteProduct=await PRODUCTS.findByIdAndDelete(req.params.productID)
-  // if(!deleteProduct) return res.status(500).json({error:'Could not delete product, try again!'})
-  // return res.status(200).json({message:'Product deleted successfully!'})
+  const deleteProduct=await PRODUCTS.findByIdAndDelete(req.params.productID)
+  if(!deleteProduct) return res.status(500).json({error:'Could not delete product, try again!'})
+  return res.status(200).json({message:'Product deleted successfully!'})
   }
 catch(error){
   return res.status(500).json({error:'Internal Server Error'})
