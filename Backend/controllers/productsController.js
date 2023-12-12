@@ -1,6 +1,6 @@
 const PRODUCTS=require('../models/productModel');
 const USER = require('../models/userModel');
-
+const ORDERS=require('../models/ordersModel')
 //------------Create Products---------------//
 const createProducts = async(req, res) => {
   const {
@@ -142,13 +142,28 @@ const deleteProduct=async(req,res)=>{
   const product=await PRODUCTS.find({_id:req.params.productID})
   if(product.length===0) return res.status(404).json({error:'Product not found'})
   if(product[0].createdBy+""!==req.seller._id+"") return res.status(403).json({error:'User not authorized to perform this action!'})
-  const deleteProduct=await PRODUCTS.findByIdAndDelete(req.params.productID)
-  if(!deleteProduct) return res.status(500).json({error:'Could not delete product, try again!'})
-  return res.status(200).json({message:'Product deleted successfully!'})
+  const findCurrentProductInOrders=await ORDERS.find()
+for(let i=0;i<findCurrentProductInOrders.length;i++){
+  if(findCurrentProductInOrders[i].orderItems.includes(req.params.productID)){
+    if(findCurrentProductInOrders[i].orderItems.length===1){
+      //delete the order itself
+      const deleteOrder=await ORDERS.findByIdAndDelete({_id:findCurrentProductInOrders[i]._id})
+    }
+    else{
+      //remove the seller and product
+      const updateOrderItems=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{orderItems:req.params.productID,sellersID:product.createdBy}})
+    }
+  }
+}
+
+  // const deleteProduct=await PRODUCTS.findByIdAndDelete(req.params.productID)
+  // if(!deleteProduct) return res.status(500).json({error:'Could not delete product, try again!'})
+  // return res.status(200).json({message:'Product deleted successfully!'})
   }
 catch(error){
   return res.status(500).json({error:'Internal Server Error'})
 }
 }
+
 
 module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems,removeCartItems,deleteProduct };
