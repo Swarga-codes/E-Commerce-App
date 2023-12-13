@@ -33,6 +33,20 @@ return res.status(200).json({message:'User details updated successfully', userDa
     profilePic,
   }})
 }
+
+//check for empty address
+const isEmptyAddress = (address) => {
+  // Check if any of the attributes is empty or undefined
+  return !(
+    address &&
+    address.streetName &&
+    address.city &&
+    address.state &&
+    address.country &&
+    address.postalCode
+  );
+};
+
 // ------------Place Order---------------//
 const createOrder=async(req,res)=>{
   const {orderItems,orderAmount,orderType}=req.body
@@ -52,6 +66,10 @@ const createOrder=async(req,res)=>{
   }
   //Check whether the price is fine or not
   if(checkAmt!==orderAmount) return res.status(400).json({error:'Order Amount inappropriate'})
+  //Check user address
+if(isEmptyAddress(req.user.address)){
+  return res.status(422).json({error:'Could not place order, please set the address!'})
+}
 if(orderType==='Cash On Delivery'){
 const newOrder=await new ORDER({
   orderItems,
@@ -91,6 +109,7 @@ const getUserOrders=async(req,res)=>{
   const orders=await ORDER.find({orderedBy:req.user._id}).populate('orderItems').populate('sellersID').sort({createdAt:-1})
   return res.status(200).json(orders)
 }
+
 // ------------DELETE ORDER---------------//
 const deleteOrder=async(req,res)=>{
   try{

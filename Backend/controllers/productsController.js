@@ -152,7 +152,7 @@ for(let i=0;i<findCurrentProductInOrders.length;i++){
     else{
       //remove the seller and product
       const updateOrderItems=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{orderItems:req.params.productID}})
-      const updateOrderItemsSeller=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{sellersID:{id:product.createdBy}}})
+      const updateOrderItemsSeller=await ORDERS.updateOne({_id:findCurrentProductInOrders[i]._id},{$pull:{sellersID:{sellerID:product.createdBy}}})
     }
   }
 }

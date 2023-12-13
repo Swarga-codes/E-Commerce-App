@@ -12,15 +12,9 @@ const ordersSchema=new mongoose.Schema({
         ref:'USER'
     },
     sellersID:[{
-        id:{
         type:ObjectID,
         ref:'SELLER'
-        },
-        orderStatus:{
-            type:Boolean,
-            default:false
         }
-    }
     ],
     orderAmount:{
         type:Number,
