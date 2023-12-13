@@ -111,7 +111,7 @@ getSellerOrders()
                 
                 </tr>
              
- { order?.orderItems?.filter(item=>item.createdBy===JSON.parse(localStorage.getItem('seller_details'))?.id)?.map((item,idx)=>(
+ { order?.orderItems?.filter(item=>item.createdBy._id===JSON.parse(localStorage.getItem('seller_details'))?.id)?.map((item)=>(
 
  
               <tr>
@@ -133,7 +133,7 @@ getSellerOrders()
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-12 py-4">
-                    <div className="text-sm text-gray-900">{order?.sellersID[idx]?.shopName}</div>
+                    <div className="text-sm text-gray-900">{item?.createdBy?.shopName}</div>
                     {/*<div className="text-sm text-gray-500">Engineering</div>*/}
                   </td>
                  
