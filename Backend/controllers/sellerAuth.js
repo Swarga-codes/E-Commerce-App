@@ -100,6 +100,7 @@ const loginSeller = async (req, res) => {
   return res.status(200).json({
     token,
     sellerData: {
+      id:isExistingSeller._id,
       shopName,
       email,
       phoneNumber,
