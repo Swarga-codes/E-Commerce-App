@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -16,6 +16,7 @@ export default function ProductEdit({isOpen,closeModal,details}) {
   const [image,setImage]=useState(details?.image)
   const [loader,setLoader]=useState(false)
   const [hostedUrl,setHostedUrl]=useState("")
+  const [isChanged,setIsChanged]=useState(false)
   const updateProduct=async(id)=>{
     const response=await fetch(`http://localhost:5000/api/products/update/${id}`,{
         method:'PATCH',
@@ -64,6 +65,11 @@ export default function ProductEdit({isOpen,closeModal,details}) {
       })
       .catch((err) => console.log(err));
   }
+  useEffect(()=>{
+if(hostedUrl){
+    updateProduct(details._id)
+}
+  },[hostedUrl])
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center">
@@ -106,12 +112,13 @@ export default function ProductEdit({isOpen,closeModal,details}) {
                 name="image"
                 onChange={(e) => {
                   loadFile(e);
+                  setIsChanged(true)
                   setImage(e.target.files[0]);
                 }}
                 ref={imageRef}
               ></input>
           <img
-            alt={details?.title}
+            alt="no prev"
             className="h-64 w-full rounded object-contain lg:h-96 lg:w-1/2"
         src={details?.image}
         id='output'
@@ -166,12 +173,12 @@ export default function ProductEdit({isOpen,closeModal,details}) {
               className="float-right mt-5 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
         onClick={async()=>{
             setLoader(true)
-            if(image===details?.image){
-            updateProduct(details._id)
+            if(!isChanged){
+            await updateProduct(details._id)
             }
             else{
-             sendImageToCloudinary()
-            updateProduct(details._id)
+             await sendImageToCloudinary()
+
             }
         
         }}
