@@ -172,7 +172,7 @@ const updateProduct=async(req,res)=>{
   const updatedData=req.body
   if(!title || !description || price<=0 || discountedPrice<=0 || quantity<0 || !image || price<=discountedPrice) return res.status(422).json({error:'Some fields are missing or having inappropriate values!'})
   const findProduct=await PRODUCTS.findOne({_id:req.params.productID})
-  if(findProduct=={}) return res.status(404).json({error:'Product not found!'})
+  if(Object.entries(findProduct).length === 0) return res.status(404).json({error:'Product not found!'})
   if(findProduct.createdBy+""!==req.seller._id+"") return res.status(403).json({error:'The seller is not authorized to perform this action!'})
   for(const updates in updatedData){
 findProduct[updates]=updatedData[updates]

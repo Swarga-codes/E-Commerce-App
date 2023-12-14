@@ -14,11 +14,10 @@ function MyProducts() {
         })
         const data=await response.json()
         setProductData(data)
-        console.log(data)
     }
     useEffect(()=>{
         fetchMyProducts()
-    },[])
+    },[productData])
   return (
     <div className="My_Products flex">
     <SellerNavbar/>

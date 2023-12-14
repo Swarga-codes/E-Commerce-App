@@ -3,6 +3,7 @@ import SellerNavbar from "../SellerNavbar/SellerNavbar";
 import Category from "./Category";
 import { useNavigate } from "react-router-dom";
 import { Ring } from '@uiball/loaders'
+import toast from "react-hot-toast";
 
 
 function CreateProducts() {
@@ -48,7 +49,7 @@ function CreateProducts() {
       .then((res) => res.json())
       .then((data) => {
         setHostedUrl(data.url);
-        console.log(data);
+        // console.log(data);
       })
       .catch((err) => console.log(err));
   }
@@ -71,11 +72,12 @@ function CreateProducts() {
     });
     const data = await response.json();
     if (data.error) {
-      setError(data.error);
+      toast.error(data.error)
       setLoader(false)
     } else {
       setLoader(false)
-      navigator("/seller/dashboard");
+      toast.success(data.message)
+      navigator("/seller/myproducts");
     }
   };
   useEffect(() => {

@@ -1,8 +1,24 @@
 import React from 'react'
 import { Star, ChevronDown } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 export const ProductCard = ({product}) => {
-   
+   async function deleteProduct(id){
+    const response=await fetch(`http://localhost:5000/api/products/delete/${id}`,{
+      method:'DELETE',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem('seller_token')
+      }
+    })
+    const data=await response.json()
+    if(data.error){
+      toast.error(data.error)
+    }
+    else{
+      toast.success(data.message)
+    }
+   }
   return (
     <section className="overflow-hidden">
       <div className="mx-auto max-w-5xl py-24">
@@ -27,12 +43,23 @@ export const ProductCard = ({product}) => {
              {product?.description}
             </p>
             <p className="font-bold mt-3">Number of Stocks: {product?.quantity}</p>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-3">
               <span className="title-font text-xl font-bold text-gray-900">${product?.price}</span>
+              <button
+              type="button"
+              className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
+              Edit Product
+            </button>
               <button
                 type="button"
                 className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
+              onClick={()=>{
+                if(window.confirm('Do you really wish to delete this product?')){
+                  deleteProduct(product._id)
+                }
+              }}
+                >
                 Delete Product
               </button>
             </div>
