@@ -15,6 +15,16 @@ const getSellerOrders=async(req,res)=>{
         return res.status(500).json({error:'Internal server error'})
     }
   }
+const completeOrders=async(req,res)=>{
+    try{
+    const orders=await ORDER.updateMany({},{$set:{completeCount:0}})
+    if(!orders) return res.status(500).json({error:'Could not update orders'})
+    return res.status(200).json({message:'Updated all orders!'})
+    }
+    catch(error){
+        return res.status(500).json({error:'Internal server error'})
+    }
 
+}
 
-module.exports={getSellerOrders}
+module.exports={getSellerOrders,completeOrders}

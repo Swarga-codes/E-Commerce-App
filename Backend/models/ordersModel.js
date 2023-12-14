@@ -31,6 +31,10 @@ const ordersSchema=new mongoose.Schema({
         country:{type:String},
         postalCode:{type:Number}
     },
+    completeCount:{
+        type:Number,
+        default:0
+    },
     isComplete:{
         type:Boolean,
         default:false

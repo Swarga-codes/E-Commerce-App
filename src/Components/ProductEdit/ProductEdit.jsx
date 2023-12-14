@@ -61,7 +61,6 @@ export default function ProductEdit({isOpen,closeModal,details}) {
       .then((res) => res.json())
       .then((data) => {
         setHostedUrl(data.url);
-        // console.log(data);
       })
       .catch((err) => console.log(err));
   }
