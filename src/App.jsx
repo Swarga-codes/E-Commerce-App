@@ -31,7 +31,6 @@ function App() {
     <Route exact path='/seller/dashboard' element={<SellerDashboard/>}/>
     <Route exact path='/seller/products/create' element={<CreateProducts/>}/>
     <Route exact path='/seller/myproducts' element={<MyProducts/>}/>
-    <Route exact path='/seller/myproducts/edit/:productID' element={<ProductEdit/>}/>
     <Route exact path='/user/profile' element={<UserProfile/>}/>
     <Route exact path='/cart/checkout' element={<CheckoutPage/>}/>
     <Route exact path='/cart/checkout/orderplaced' element={<OrderPlaced/>}/>

@@ -1,8 +1,10 @@
-import React from 'react'
+import {useState} from 'react'
 import { Star, ChevronDown } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ProductEdit from '../ProductEdit/ProductEdit'
 
 export const ProductCard = ({product}) => {
+  const [open,setOpen]=useState(false)
    async function deleteProduct(id){
     const response=await fetch(`http://localhost:5000/api/products/delete/${id}`,{
       method:'DELETE',
@@ -19,7 +21,11 @@ export const ProductCard = ({product}) => {
       toast.success(data.message)
     }
    }
+   function closeModal(){
+    setOpen(false)
+   }
   return (
+    <>
     <section className="overflow-hidden">
       <div className="mx-auto max-w-5xl py-24">
         <div className="mx-auto flex flex-wrap items-center lg:w-4/5">
@@ -48,7 +54,8 @@ export const ProductCard = ({product}) => {
               <button
               type="button"
               className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            >
+            onClick={()=>setOpen(true)}
+              >
               Edit Product
             </button>
               <button
@@ -67,5 +74,7 @@ export const ProductCard = ({product}) => {
         </div>
       </div>
     </section>
+    {open && <ProductEdit details={product} isOpen={open} closeModal={closeModal}/>}
+    </>
   )
 }
