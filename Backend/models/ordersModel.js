@@ -33,7 +33,8 @@ const ordersSchema=new mongoose.Schema({
     },
     completedItems:[{
         type:ObjectID,
-        ref:'PRODUCTS'
+        ref:'PRODUCTS',
+        default:[]
     }],
     isComplete:{
         type:Boolean,
