@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import SellerNavbar from '../SellerNavbar/SellerNavbar'
 import dateFormatter from '../../util/dateFormatter'
+import { Check } from 'lucide-react'
+import toast from 'react-hot-toast'
 function SellerDashboard() {
   const [orders,setOrders]=useState([])
   async function getSellerOrders(){
@@ -13,14 +15,32 @@ function SellerDashboard() {
     })
     const data=await response.json()
     setOrders(data)
-    console.log(data)
+  }
+  async function completeOrder(orderID,productID){
+    const response=await fetch(`http://localhost:5000/api/sellers/completeorders/${orderID}`,{
+      method:'PATCH',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+localStorage.getItem('seller_token')
+      },
+      body:JSON.stringify({
+        productID
+      })
+    })
+    const data=await response.json()
+    if(data.error){
+      toast.error(data.error)
+    }
+    else{
+      toast.success(data.message)
+    }
   }
   function addressFormatter(address){
     return address?.streetName+", "+address?.city+", "+address?.state+", "+address?.country+", "+address?.postalCode
   }
   useEffect(()=>{
 getSellerOrders()
-  },[])
+  },[orders])
   return (
     <>
     <div className="Seller_Dashboard flex">
@@ -100,13 +120,7 @@ getSellerOrders()
                   scope="col"
                   className="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500 float-right"
                 >
-                <button
-                type="button"
-                className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-               
-                >
-               Complete Order
-              </button>
+              
                 </th>
                 
                 </tr>
@@ -145,6 +159,33 @@ getSellerOrders()
                   <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 font-bold">
                     {dateFormatter(order?.createdAt)}
                   </td>
+                  <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
+            {order?.completedItems?.includes(item._id)?
+                  <button
+                  type="button"
+                  className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                 
+                  >
+                  <div className='flex'>
+                  <span>Completed</span>
+                  <span className='ml-1'><Check/></span>
+                  </div>
+                 
+                </button>
+                :
+                <button
+    type="button"
+    class="rounded-md border border-green-600 px-3 py-2 text-sm font-semibold text-green-600 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+onClick={()=>{
+  if(window.confirm('Are you sure you want to mark the order as completed?')){
+  completeOrder(order._id,item._id)
+  }
+}}
+    >
+    Complete Order
+  </button>
+            }
+                </td>
                   {/*<td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium">
                     <a href="#" className="text-gray-500">
                       Edit

@@ -16,10 +16,10 @@ export default function SellerNavbar() {
   </div>
   </Link>
       
-      <div className="mt-6 flex flex-1 flex-col justify-between">
+      <div className="mt-10 flex flex-1 flex-col justify-between">
         <nav className="-mx-3 space-y-6 ">
-          <div className="space-y-3 ">
-            <label className="px-3 text-xs font-semibold uppercase text-gray-900">analytics</label>
+          <div className="space-y-6 ">
+           
             <Link
             to={'/seller/dashboard'}
               className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
@@ -35,9 +35,7 @@ export default function SellerNavbar() {
               <PackagePlus className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Create</span>
             </Link>
-          </div>
-          <div className="space-y-3 ">
-            <label className="px-3 text-xs font-semibold uppercase text-gray-900">content</label>
+        
             <Link to={'/seller/myproducts'}
               className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
               href="#"
@@ -45,7 +43,7 @@ export default function SellerNavbar() {
             <Boxes className="h-5 w-5" aria-hidden="true"/>
               <span className="mx-2 text-sm font-medium">My Products</span>
             </Link>
-            <a
+           {/* <a
               className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
               href="#"
             >
@@ -58,7 +56,7 @@ export default function SellerNavbar() {
             >
               <Paperclip className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Checklists</span>
-            </a>
+  </a>*/}
           </div>
         </nav>
         <div className="mt-6">

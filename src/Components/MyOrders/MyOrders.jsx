@@ -108,7 +108,7 @@ function MyOrders() {
                 scope="col"
                 class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-500 float-right"
               >
-              <button
+             {!order?.isComplete && <button
               type="button"
               className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               onClick={()=>{
@@ -118,7 +118,7 @@ function MyOrders() {
               }}
               >
              Cancel Order
-            </button>
+            </button>}
               </th>
               
               </tr>

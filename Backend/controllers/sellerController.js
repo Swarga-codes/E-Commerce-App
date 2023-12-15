@@ -28,6 +28,7 @@ const completeOrders=async(req,res)=>{
     const product=await PRODUCTS.findOne({_id:productID})
     if(!product) return res.status(404).json({error:'Product not found!'})
     if(!orders.orderItems.includes(productID)) return res.status(404).json({error:'Product does not exist for this order!'})
+    if(orders.completedItems.includes(productID)) return res.status(422).json({error:'Product already delivered!'})
     if(product.createdBy+""!==req.seller._id+"") return res.status(403).json({error:'Seller not authorized to modify this product!'}) 
     const updateOrder=await ORDER.findOneAndUpdate({_id:req.params.orderID},{$push:{completedItems:productID}},{new:true})
 if(!updateOrder) return res.status(500).json({'error':'Could not update order items!'})
