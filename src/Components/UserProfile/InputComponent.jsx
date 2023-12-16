@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { fetchPOSTPUT } from '../../util/useFetch'
 import toast from 'react-hot-toast'
-
-export function InputComponent({image}) {
+import { Ring } from '@uiball/loaders'
+export function InputComponent({image,changed}) {
     const userData=JSON.parse(localStorage.getItem('user_data'))
     const [name,setName]=useState(userData?.name)
     const [email,setEmail]=useState(userData?.email)
@@ -12,6 +12,8 @@ export function InputComponent({image}) {
     const [state,setState]=useState(userData?.address?.state)
     const [country,setCountry]=useState(userData?.address?.country)
     const [postalCode,setPostalCode]=useState(userData?.address?.postalCode)
+    const [loader,setLoader]=useState(false)
+    const [hostedUrl,setHostedUrl]=useState("")
     let body={
         email,
         name,
@@ -23,13 +25,14 @@ export function InputComponent({image}) {
             country:country?country:userData?.address?.country,
             postalCode:postalCode?postalCode:userData?.address?.postalCode
         },
-        profilePic:image
+        profilePic:hostedUrl?hostedUrl:JSON.parse(localStorage.getItem('user_data'))?.profilePic
     }
 
 //     async function updateUser(){
 //         setUpdate(await fetchPOSTPUT('/users/updateUser','PATCH','user_token',body))
         
 // }
+
 const updateUser=async()=>{
 const response=await fetch('http://localhost:5000/api/users/updateUser',{
     method:'PATCH',
@@ -51,12 +54,39 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
       else{
         toast.error(data.error)
       }
+      setLoader(false)
 }
+function sendImageToCloudinary() {
+  const data = new FormData();
+  data.append("file", image);
+  data.append("upload_preset", "e_commerce_app");
+  data.append("cloud_name", "markus0509");
+  fetch("https://api.cloudinary.com/v1_1/markus0509/image/upload", {
+    method: "POST",
+    body: data,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setHostedUrl(data.url);
+    })
+    .catch((err) => console.log(err));
+}
+useEffect(()=>{
+  if(hostedUrl){
+updateUser()
+  }
+},[hostedUrl])
 
   return (
     <form onSubmit={(e)=>{
         e.preventDefault()
+        setLoader(true)
+        if(!changed){
       updateUser()
+        }
+        else{
+          sendImageToCloudinary()
+        }
 }}>
     <div className="border-b border-gray-900/10 pb-12">
     <p className="mt-1 text-sm leading-6 text-gray-600 font-semibold">Note: Your data will only be updated when you click the update button.</p>
@@ -201,12 +231,26 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
    {/* <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
       Cancel
   </button>*/}
+  {!loader?
     <button
       type="submit"
       className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       Update
     </button>
+    :
+    <button
+    type="submit"
+    className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+  <Ring 
+  size={20}
+  lineWeight={5}
+  speed={2} 
+  color="white" 
+ />
+  </button>
+  }
   </div>
   </div>
   </form>

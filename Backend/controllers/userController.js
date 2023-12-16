@@ -2,12 +2,18 @@ const ORDER = require('../models/ordersModel')
 const PRODUCTS = require('../models/productModel')
 const USER=require('../models/userModel')
 const SELLER=require('../models/sellerModel')
+const validator=require('validator')
 //------------Update User---------------//
 const updateUserData=async(req,res)=>{
 const {email,name,phoneNumber,profilePic,address}=req.body
 if(!email || !name || !phoneNumber || !profilePic){
     return res.status(400).json({error:'Some fields are empty'})
 }
+if(!validator.isEmail(email)) return res.status(422).json({error:'Please include a valid email!'})
+if (!validator.isMobilePhone(phoneNumber, "any", { strictMode: false }))
+return res
+  .status(422)
+  .json({ error: "Please provide a valid phone number" });
 const updateUser=await USER.findByIdAndUpdate(req.user._id,{
    $set: {email,
     name,

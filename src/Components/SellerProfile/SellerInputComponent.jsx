@@ -1,21 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { fetchPOSTPUT } from '../../util/useFetch'
 import toast from 'react-hot-toast'
 import { Ring } from '@uiball/loaders'
 
-export function SellerInputComponent({image}) {
+export function SellerInputComponent({image,changed}) {
     const sellerData=JSON.parse(localStorage.getItem('seller_details'))
     const [shopName,setShopName]=useState(sellerData?.shopName)
     const [email,setEmail]=useState(sellerData?.email)
     const [phoneNumber,setPhoneNumber]=useState(sellerData?.phoneNumber)
     const [upiId,setUpiId]=useState(sellerData?.upiId)
     const [loader,setLoader]=useState(false)
+  const [hostedUrl,setHostedUrl]=useState("")
     let body={
       shopName,
         email,
         phoneNumber,
         upiId,
-        profilePic:image
+        profilePic:hostedUrl?hostedUrl:JSON.parse(localStorage.getItem('seller_details'))?.profilePic
     }
 const updateSeller=async()=>{
 const response=await fetch(`http://localhost:5000/api/sellers/updateseller/${JSON.parse(localStorage.getItem('seller_details'))?.id}`,{
@@ -40,12 +41,37 @@ const response=await fetch(`http://localhost:5000/api/sellers/updateseller/${JSO
       }
       setLoader(false)
 }
+function sendImageToCloudinary() {
+  const data = new FormData();
+  data.append("file", image);
+  data.append("upload_preset", "e_commerce_app");
+  data.append("cloud_name", "markus0509");
+  fetch("https://api.cloudinary.com/v1_1/markus0509/image/upload", {
+    method: "POST",
+    body: data,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setHostedUrl(data.url);
+    })
+    .catch((err) => console.log(err));
+}
 
+useEffect(()=>{
+  if(hostedUrl){
+updateSeller()
+  }
+},[hostedUrl])
   return (
-    <form onSubmit={(e)=>{
+    <form onSubmit={async(e)=>{
         e.preventDefault()
         setLoader(true)
-      updateSeller()
+        if(!changed){
+      await updateSeller()
+        }
+        else{
+          await sendImageToCloudinary()
+        }
 }}>
     <div className="border-b border-gray-900/10 pb-12">
     <p className="mt-1 text-sm leading-6 text-gray-600 font-semibold">Note: Your data will only be updated when you click the update button.</p>
