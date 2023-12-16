@@ -61,14 +61,16 @@ export default function SellerNavbar() {
         </nav>
         <div className="mt-6">
           <div className="mt-6 flex items-center justify-between">
-            <a href="#" className="flex items-center gap-x-2">
+          <Link to='/seller/profile'>
+            <div className="flex items-center gap-x-2">
               <img
                 className="h-7 w-7 rounded-full object-cover"
                 src={JSON.parse(localStorage.getItem("seller_details")).profilePic}
                 alt="avatar"
               />
               <span className="text-sm font-medium text-gray-700">{JSON.parse(localStorage.getItem("seller_details")).shopName}</span>
-            </a>
+            </div>
+            </Link>
             <a
               onClick={()=>{
                 if(window.confirm("Do you really wish to logout?")){

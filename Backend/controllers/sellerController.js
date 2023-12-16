@@ -1,5 +1,7 @@
+const mongoose=require('mongoose')
 const ORDER=require('../models/ordersModel')
 const PRODUCTS=require('../models/productModel')
+const SELLER = require('../models/sellerModel')
 // ------------Get Order Details for current SELLER---------------//
 const getSellerOrders=async(req,res)=>{
     try{
@@ -44,4 +46,33 @@ if(updateOrder.completedItems.length===updateOrder.orderItems.length){
 
 }
 
-module.exports={getSellerOrders,completeOrders}
+// ------------Update seller details---------------//
+const updateSeller=async(req,res)=>{
+    try{
+    const {shopName,email,phoneNumber,upiId,profilePic}=req.body
+    if(!shopName || !email || !phoneNumber || !profilePic) return res.status(422).json({error:'Some mandatory fields are missing!'})
+const objParams = new mongoose.Types.ObjectId(req.params.sellerID);
+    if(!req.seller._id.equals(objParams)) return res.status(403).json({error:'Seller not authorized to modify this data!'})
+    const updateData=await SELLER.findByIdAndUpdate(req.params.sellerID,{$set:{
+        shopName,
+        email,
+        phoneNumber,
+        upiId,
+        profilePic
+    }},{new:true})
+    if(!updateData) return res.status(500).json({error:'Could not update seller data, try again!'})
+    return res.status(200).json({message:'Seller data updated successfully',sellerData:{id:req.params.sellerID,
+        shopName,
+        email,
+        phoneNumber,
+        upiId,
+        profilePic
+    }})
+}
+catch(error){
+    return res.status(500).json({error:'Internal Server Error'})
+}
+
+}
+
+module.exports={getSellerOrders,completeOrders,updateSeller}

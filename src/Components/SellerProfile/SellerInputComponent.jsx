@@ -2,34 +2,18 @@ import React, { useState } from 'react'
 import { fetchPOSTPUT } from '../../util/useFetch'
 import toast from 'react-hot-toast'
 
-export function InputComponent({image}) {
-    const userData=JSON.parse(localStorage.getItem('user_data'))
-    const [name,setName]=useState(userData?.name)
-    const [email,setEmail]=useState(userData?.email)
-    const [phoneNumber,setPhoneNumber]=useState(userData?.phoneNumber)
-    const [streetName,setStreetName]=useState(userData?.address?.streetName)
-    const [city,setCity]=useState(userData?.address?.city)
-    const [state,setState]=useState(userData?.address?.state)
-    const [country,setCountry]=useState(userData?.address?.country)
-    const [postalCode,setPostalCode]=useState(userData?.address?.postalCode)
+export function SellerInputComponent({image}) {
+    const sellerData=JSON.parse(localStorage.getItem('seller_details'))
+    const [shopName,setShopName]=useState(sellerData?.shopName)
+    const [email,setEmail]=useState(sellerData?.email)
+    const [phoneNumber,setPhoneNumber]=useState(sellerData?.phoneNumber)
+    const [upiId,setUpiId]=useState(sellerData?.upiId)
     let body={
         email,
-        name,
+        shopName,
         phoneNumber,
-        address:{
-            streetName:streetName?streetName:userData?.address?.streetName,
-            city:city?city:userData?.address?.city,
-            state:state?state:userData?.address?.state,
-            country:country?country:userData?.address?.country,
-            postalCode:postalCode?postalCode:userData?.address?.postalCode
-        },
         profilePic:image
     }
-
-//     async function updateUser(){
-//         setUpdate(await fetchPOSTPUT('/users/updateUser','PATCH','user_token',body))
-        
-// }
 const updateUser=async()=>{
 const response=await fetch('http://localhost:5000/api/users/updateUser',{
     method:'PATCH',
@@ -45,7 +29,7 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
       
       if(!data.error){
         toast.success(data.message)
-        localStorage.setItem('user_data',JSON.stringify(data.userData))
+        localStorage.setItem('user_data',JSON.stringify(data.sellerData))
 
       }
       else{
@@ -64,17 +48,17 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
       <div className="sm:col-span-3">
         <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-          Full Name
+          Shop Name
         </label>
         <div className="mt-2">
           <input
             type="text"
             name="first-name"
             id="first-name"
-            value={name}
+            value={shopName}
             autoComplete="given-name"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-          onChange={(e)=>setName(e.target.value)}
+          onChange={(e)=>setShopName(e.target.value)}
             />
         </div>
       </div>
@@ -115,86 +99,26 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
 
       <div className="col-span-full">
         <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-gray-900">
-          Street address
+          UPI ID
         </label>
         <div className="mt-2">
           <input
             type="text"
             name="street-address"
             id="street-address"
-            value={streetName}
+            value={upiId}
             autoComplete="street-address"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-            onChange={(e)=>setStreetName(e.target.value)}
+            onChange={(e)=>setUpiId(e.target.value)}
             />
         </div>
       </div>
 
-      <div className="sm:col-span-2 sm:col-start-1">
-        <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
-          City
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            name="city"
-            id="city"
-            value={city}
-            autoComplete="address-level2"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-            onChange={(e)=>setCity(e.target.value)}
-          />
-        </div>
-      </div>
+     
 
-      <div className="sm:col-span-2">
-        <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
-          State / Province
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            name="region"
-            id="region"
-            value={state}
-            autoComplete="address-level1"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-            onChange={(e)=>setState(e.target.value)}
-          />
-        </div>
-      </div>
-      <div className="sm:col-span-2">
-      <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-        Country
-      </label>
-      <div className="mt-2">
-        <input
-          id="country"
-          name="country"
-          value={country}
-          autoComplete="country-name"
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-black sm:max-w-xs sm:text-sm sm:leading-6"
-          onChange={(e)=>setCountry(e.target.value)}
-          />
-          
-      </div>
-    </div>
-      <div className="sm:col-span-2">
-        <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-gray-900">
-          ZIP / Postal code
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            name="postal-code"
-            id="postal-code"
-            value={postalCode}
-            autoComplete="postal-code"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-            onChange={(e)=>setPostalCode(e.target.value)}
-          />
-        </div>
-      </div>
+     
+     
+      
    
     </div>
     <div className="mt-6 flex items-center justify-end gap-x-6">

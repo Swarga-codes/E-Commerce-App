@@ -16,6 +16,7 @@ import OrderPlaced from './Components/OrderPlaced/OrderPlaced'
 import MyOrders from './Components/MyOrders/MyOrders'
 import { Toaster } from 'react-hot-toast'
 import ProductEdit from './Components/ProductEdit/ProductEdit'
+import SellerProfile from './Components/SellerProfile/SellerProfile'
 function App() {
 
   return (
@@ -27,6 +28,7 @@ function App() {
     <Route exact path='/users/login' element={<UserLogin/>}/>
     <Route exact path='/users/register' element={<UserSignup/>}/>
     <Route exact path='/seller/login' element={<SellerLogin/>}/>
+    <Route exact path='/seller/profile' element={<SellerProfile/>}/>
     <Route exact path='/seller/register' element={<SellerRegister/>}/>
     <Route exact path='/seller/dashboard' element={<SellerDashboard/>}/>
     <Route exact path='/seller/products/create' element={<CreateProducts/>}/>
