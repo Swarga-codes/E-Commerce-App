@@ -4,7 +4,7 @@ import { SellerInputComponent } from './SellerInputComponent'
 import SellerNavbar from '../SellerNavbar/SellerNavbar'
 function SellerProfile() {
     const imageInput=useRef()
-    const[image,setImage]=useState(JSON.parse(localStorage.getItem('seller_data'))?.profilePic)
+    const[image,setImage]=useState(JSON.parse(localStorage.getItem('seller_details'))?.profilePic)
   return (
     <div className='SellerProfile flex'>
     <SellerNavbar/>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { fetchPOSTPUT } from '../../util/useFetch'
 import toast from 'react-hot-toast'
+import { Ring } from '@uiball/loaders'
 
 export function SellerInputComponent({image}) {
     const sellerData=JSON.parse(localStorage.getItem('seller_details'))
@@ -8,39 +9,43 @@ export function SellerInputComponent({image}) {
     const [email,setEmail]=useState(sellerData?.email)
     const [phoneNumber,setPhoneNumber]=useState(sellerData?.phoneNumber)
     const [upiId,setUpiId]=useState(sellerData?.upiId)
+    const [loader,setLoader]=useState(false)
     let body={
+      shopName,
         email,
-        shopName,
         phoneNumber,
+        upiId,
         profilePic:image
     }
-const updateUser=async()=>{
-const response=await fetch('http://localhost:5000/api/users/updateUser',{
+const updateSeller=async()=>{
+const response=await fetch(`http://localhost:5000/api/sellers/updateseller/${JSON.parse(localStorage.getItem('seller_details'))?.id}`,{
     method:'PATCH',
         headers:{
           'Content-Type':'application/json',
-          'Authorization':'Bearer '+localStorage.getItem('user_token')
+          'Authorization':'Bearer '+localStorage.getItem('seller_token')
         },
         body:JSON.stringify(
           body
         )
       })
       const data=await response.json()
-      
       if(!data.error){
         toast.success(data.message)
-        localStorage.setItem('user_data',JSON.stringify(data.sellerData))
+        localStorage.setItem('seller_details',JSON.stringify(data.sellerData))
+      
 
       }
       else{
         toast.error(data.error)
       }
+      setLoader(false)
 }
 
   return (
     <form onSubmit={(e)=>{
         e.preventDefault()
-      updateUser()
+        setLoader(true)
+      updateSeller()
 }}>
     <div className="border-b border-gray-900/10 pb-12">
     <p className="mt-1 text-sm leading-6 text-gray-600 font-semibold">Note: Your data will only be updated when you click the update button.</p>
@@ -125,12 +130,26 @@ const response=await fetch('http://localhost:5000/api/users/updateUser',{
    {/* <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
       Cancel
   </button>*/}
+  {!loader?
     <button
       type="submit"
       className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       Update
     </button>
+    :
+    <button
+    type="submit"
+    className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+  <Ring 
+  size={20}
+  lineWeight={5}
+  speed={2} 
+  color="white" 
+ />
+  </button>
+  }
   </div>
   </div>
   </form>

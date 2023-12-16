@@ -26,8 +26,8 @@ module.exports=async(req,res,next)=>{
 }
 catch(error){
     if (error.name === 'TokenExpiredError') {
-        return res.status(401).json({ message: 'Token has expired, Please login' });
+        return res.status(401).json({ error: 'Token has expired, Please login' });
       }
-      return res.status(500).json({message:'Internal server error'})
+      return res.status(500).json({error:'Internal server error'})
 }
 }
