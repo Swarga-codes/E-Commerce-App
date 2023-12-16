@@ -1,2 +1,2 @@
-const layoutException=['/users/login','/users/register','/seller/login','/seller/register','/seller/dashboard','/seller/products/create','/seller/myproducts','/seller/profile']
+const layoutException=['/users/login','/users/register','/seller/login','/seller/register','/seller/dashboard','/seller/products/create','/seller/myproducts','/seller/profile','/seller/analytics']
 export default layoutException

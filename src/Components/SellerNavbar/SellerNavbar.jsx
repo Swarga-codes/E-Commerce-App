@@ -1,5 +1,5 @@
 import React from 'react'
-import { BarChart, Wallet, Boxes, BellRing, Paperclip, LogIn, PackagePlus } from 'lucide-react'
+import { BarChart, Wallet, Boxes, BellRing, Paperclip, LogIn, PackagePlus, Activity } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 export default function SellerNavbar() {
   const navigator=useNavigate()
@@ -43,6 +43,14 @@ export default function SellerNavbar() {
             <Boxes className="h-5 w-5" aria-hidden="true"/>
               <span className="mx-2 text-sm font-medium">My Products</span>
             </Link>
+            <Link to={'/seller/analytics'}
+            className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
+            href="#"
+          >
+          
+          <Activity className="h-5 w-5" aria-hidden="true"/>
+            <span className="mx-2 text-sm font-medium">Analytics</span>
+          </Link>
            {/* <a
               className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
               href="#"

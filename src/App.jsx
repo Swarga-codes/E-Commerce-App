@@ -17,6 +17,7 @@ import MyOrders from './Components/MyOrders/MyOrders'
 import { Toaster } from 'react-hot-toast'
 import ProductEdit from './Components/ProductEdit/ProductEdit'
 import SellerProfile from './Components/SellerProfile/SellerProfile'
+import SellerAnalytics from './Components/SellerAnalytics/SellerAnalytics'
 function App() {
 
   return (
@@ -31,6 +32,7 @@ function App() {
     <Route exact path='/seller/profile' element={<SellerProfile/>}/>
     <Route exact path='/seller/register' element={<SellerRegister/>}/>
     <Route exact path='/seller/dashboard' element={<SellerDashboard/>}/>
+    <Route exact path='/seller/analytics' element={<SellerAnalytics/>}/>
     <Route exact path='/seller/products/create' element={<CreateProducts/>}/>
     <Route exact path='/seller/myproducts' element={<MyProducts/>}/>
     <Route exact path='/user/profile' element={<UserProfile/>}/>
