@@ -5,6 +5,7 @@ import { Check } from 'lucide-react'
 import toast from 'react-hot-toast'
 function SellerDashboard() {
   const [orders,setOrders]=useState([])
+  const [loader,setLoader]=useState(true)
   async function getSellerOrders(){
     const response=await fetch('http://localhost:5000/api/sellers/orders',{
       method:'GET',
@@ -15,6 +16,7 @@ function SellerDashboard() {
     })
     const data=await response.json()
     setOrders(data)
+    setLoader(false)
   }
   async function completeOrder(orderID,productID){
     const response=await fetch(`http://localhost:5000/api/sellers/completeorders/${orderID}`,{
@@ -101,7 +103,8 @@ getSellerOrders()
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-              {orders.length===0 && <h2 className='p-10 text-xl'>No Order History!</h2>}
+              {orders.length===0 && !loader && <h2 className='p-10 text-xl'>No Order History!</h2>}
+              {loader && <h2 className='p-10 text-xl'>Hang on, Order History loading...</h2>}
                
     {orders?.map(order=>(
 

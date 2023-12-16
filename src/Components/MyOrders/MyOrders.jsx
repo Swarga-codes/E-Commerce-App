@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 function MyOrders() {
   const [orders,setOrders]=useState([])
   const [cancelOrderCount,setCancelOrderCount]=useState(0);
+  const [loader,setLoader]=useState(true)
   //fetch orders data for current user
   const getMyOrders=async()=>{
     const response=await fetch('http://localhost:5000/api/users/orders',{
@@ -15,6 +16,7 @@ function MyOrders() {
     })
     const data=await response.json()
     setOrders(data)
+    setLoader(false)
   }
   const cancelOrder=async(orderID)=>{
     const response=await fetch(`http://localhost:5000/api/users/orders/delete/${orderID}`,{
@@ -91,7 +93,8 @@ function MyOrders() {
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-            {orders?.length===0 && <h2 className='p-10 text-xl'>No Order History!</h2>}
+            {orders?.length===0 && !loader &&  <h2 className='p-10 text-xl'>No Order History!</h2>}
+            {loader &&  <h2 className='p-10 text-xl'>Hang on, Order History is loading...</h2>}
              {orders?.map(order=>(
 
             <>
