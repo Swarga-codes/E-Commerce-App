@@ -2,6 +2,9 @@ const mongoose=require('mongoose')
 const ORDER=require('../models/ordersModel')
 const PRODUCTS=require('../models/productModel')
 const SELLER = require('../models/sellerModel')
+const validator=require('validator')
+const { validateUPI } = require("../utils/validateUpi");
+
 // ------------Get Order Details for current SELLER---------------//
 const getSellerOrders=async(req,res)=>{
     try{
@@ -53,6 +56,13 @@ const updateSeller=async(req,res)=>{
     if(!shopName || !email || !phoneNumber || !profilePic) return res.status(422).json({error:'Some mandatory fields are missing!'})
 const objParams = new mongoose.Types.ObjectId(req.params.sellerID);
     if(!req.seller._id.equals(objParams)) return res.status(403).json({error:'Seller not authorized to modify this data!'})
+    if(!validator.isEmail(email)) return res.status(422).json({error:'Please include a valid email!'})
+    if (!validator.isMobilePhone(phoneNumber, "any", { strictMode: false }))
+    return res
+      .status(422)
+      .json({ error: "Please provide a valid phone number" });
+      if (upiId && !validateUPI(upiId))
+      return res.status(422).json({ error: "Please provide a valid upi id" }); 
     const updateData=await SELLER.findByIdAndUpdate(req.params.sellerID,{$set:{
         shopName,
         email,
