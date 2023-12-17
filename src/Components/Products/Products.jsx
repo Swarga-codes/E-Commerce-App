@@ -78,7 +78,7 @@ function Products({details,idx}) {
 
         </div>
         <div className="mt-5 flex items-center space-x-2">
-          <span className="block text-3xl font-semibold">${details?.price}</span>
+          <span className="block text-3xl font-semibold">${details?.discountedPrice}</span>
         
         </div>
         {/*{!cart.find(obj=>obj.title===details.title)?*/}

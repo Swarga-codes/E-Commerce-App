@@ -2,8 +2,9 @@ import React,{useState,useEffect} from 'react'
 import { X,MoveRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
-
+import { Ring } from '@uiball/loaders'
 import Category from '../CreateProducts/Category'
+import toast from 'react-hot-toast'
 export default function CheckoutPage() {
   const typeOfPayment=[
     "Cash On Delivery",
@@ -13,9 +14,13 @@ export default function CheckoutPage() {
     const navigator=useNavigate()
     const [cart,setCart]=useState([])
     const [orderType,setOrderType]=useState(typeOfPayment[0])
+    const [loader,setLoader]=useState(true)
+    const [placeOrderLoader,setPlaceOrderLoader]=useState(false)
     async function cartData(){
       const data=await fetchGET('/products/cart','GET','user_token')
+      setLoader(false)
       setCart(data.cartItems)
+
       // await dispatch(actions.addToCart(data.cartItems[0]))
   
     }
@@ -23,18 +28,22 @@ export default function CheckoutPage() {
       const orderItems=cart.map(item=>item._id)
       const body={
         orderItems,
-        orderAmount:cart?.reduce((acc,curr)=>acc+curr.price,0),
+        orderAmount:cart?.reduce((acc,curr)=>acc+curr.discountedPrice,0),
         orderType,
         address:JSON.parse(localStorage.getItem('user_data'))?.address
       }
       const data=await fetchPOSTPUT('/users/createOrder','POST','user_token',body)
-   console.log(data)
    if(!data.error){
     const updateData=JSON.parse(localStorage.getItem('user_data'))
     updateData.cartItems=[]
     localStorage.setItem('user_data',JSON.stringify(updateData))
     navigator('/cart/checkout/orderplaced')
+    toast.success('Order placed successfully!')
    }
+   else{
+    toast.error(data.error)
+   }
+   setPlaceOrderLoader(false)
     }
     useEffect(()=>{
       cartData()
@@ -309,16 +318,30 @@ export default function CheckoutPage() {
   </div>*/}
 
                       <div className="mt-10 flex justify-end border-t border-gray-200 pt-6">
-                        <button
+                       {!placeOrderLoader?
+                         <button
                           type="button"
                           className="flex rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                         onClick={()=>{
+                          setPlaceOrderLoader(true)
                           placeOrder()
                         }}
                           >
                           Place Order
                           <span className="ml-2"><MoveRight /></span> 
                         </button>
+                        :
+                        <button
+                          type="button"
+                          className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                        <Ring 
+                        size={20}
+                        lineWeight={5}
+                        speed={2} 
+                        color="white" 
+                       />
+                        </button>}
                       </div>
                     </div>
                   </form>
@@ -330,6 +353,7 @@ export default function CheckoutPage() {
           <div className="bg-gray-100 px-5 py-6 md:px-8">
             <div className="flow-root">
               <ul className="-my-7 divide-y divide-gray-200">
+              {loader && <h1 className='font-bold'>Loading cart data...</h1>}
                 {cart?.map((product) => (
                   <li
                     key={product._id}
@@ -354,7 +378,7 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                     <div className="ml-auto flex flex-col items-end justify-between">
-                      <p className="text-right text-sm font-bold text-gray-900">${product?.price}</p>
+                      <p className="text-right text-sm font-bold text-gray-900">${product?.discountedPrice}</p>
                     {/*  <button
                         type="button"
                         className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
@@ -394,7 +418,8 @@ export default function CheckoutPage() {
               </li>*/}
               <li className="flex items-center justify-between text-gray-900">
                 <p className="text-sm font-medium ">Total</p>
-                <p className="text-sm font-bold ">${cart?.reduce((acc,curr)=>acc+curr.price,0)}</p>
+                {!loader && <p className="text-sm font-bold ">${cart?.reduce((acc,curr)=>acc+curr.discountedPrice,0)}</p>}
+                {loader && <p className="text-sm font-bold ">Calculating...</p>}
               </li>
             </ul>
           </div>

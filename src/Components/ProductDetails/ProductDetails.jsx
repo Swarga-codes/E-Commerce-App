@@ -9,6 +9,7 @@ import { actions } from '../../util/Store'
 function ProductDetails() {
     const {productID}=useParams()
     const[details,setDetails]=useState()
+    const [loader,setLoader]=useState(true)
     const cart=useSelector(state=>state.cart)
  const dispatch=useDispatch()
 
@@ -26,6 +27,7 @@ function ProductDetails() {
         else{
             setDetails(data)
         }
+        setLoader(false)
         
     }
     const addToCart=async()=>{
@@ -74,14 +76,14 @@ function ProductDetails() {
             />
           <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:pl-10">
           <div className="flex">
-            <h2 className="text-sm font-semibold tracking-widest text-gray-500">#{details?.category}</h2>
+            <h2 className="text-sm font-semibold tracking-widest text-gray-500">#{loader?"Loading...":details?.category}</h2>
             <h2 className="ml-auto cursor-pointer" onClick={()=>{
                 copy(`http://localhost:5173/product/details/${details._id}`)
                 toast.success('Link copied to clipboard!')
             }}><Share /></h2>
             </div>
-            <h1 className="my-4 text-3xl font-semibold text-black">{details?.title}</h1>
-            <p className="my-4 text-lg font-semibold text-black">Sold by {details?.createdBy?.shopName}</p>
+            <h1 className="my-4 text-3xl font-semibold text-black">{loader?"Loading...":details?.title}</h1>
+            <p className="my-4 text-lg font-semibold text-black">Sold by {loader?"Loading...":details?.createdBy?.shopName}</p>
             {/*<div className="my-4 flex items-center">
               <span className="flex items-center space-x-1">
                 {[...Array(5)].map((_, i) => (
@@ -91,16 +93,16 @@ function ProductDetails() {
               </span>
                 </div>*/}
             <p className="leading-relaxed">
-              {details?.description}
+              {loader?"Loading...":details?.description}
             </p>
             <div className="mb-5 mt-6 flex items-center border-b-2 border-gray-100 pb-5">
           
              
             </div>
             <div className="flex items-center">
-              <span className="title-font text-xl font-bold text-gray-900">${details?.discountedPrice}</span>
+              <span className="title-font text-xl font-bold text-gray-900">${loader?"Loading...":details?.discountedPrice}</span>
               <span className="title-font text-xl font-bold text-gray-400 line-through ml-5">
-                ${details?.price}
+                ${loader?"Loading...":details?.price}
               </span>
               {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems)?.includes(details?._id)?
               details?.quantity > 0?

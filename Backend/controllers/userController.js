@@ -68,7 +68,7 @@ const createOrder=async(req,res)=>{
     // if(!(sellersID.includes(currItem.createdBy))) return res.status(404).json({error:'Seller not found for the product'})
   sellersID.push(currItem.createdBy)
     if(currItem?.quantity<=0) return res.status(422).json({error:'One or more Item(s) is out of stock!'})
-    checkAmt+=currItem.price;
+    checkAmt+=currItem.discountedPrice;
   }
   //Check whether the price is fine or not
   if(checkAmt!==orderAmount) return res.status(400).json({error:'Order Amount inappropriate'})
