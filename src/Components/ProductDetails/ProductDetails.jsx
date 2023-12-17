@@ -1,102 +1,137 @@
-import React from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import copy from 'copy-to-clipboard';
+import { Share } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
+import { useSelector,useDispatch } from 'react-redux'
 import { actions } from '../../util/Store'
-export default function ProductDetails({isOpen,closeModal,details,remove,add}) {
-  const cart=useSelector(state=>state.cart)
-  const dispatch=useDispatch()
-  // const addToCart=()=>{
-  //  dispatch(actions.addToCart(details))
-  // }
-  // const removeFromCart=()=>{
-  //   dispatch(actions.removeFromCart(details.title))
-  // }
+function ProductDetails() {
+    const {productID}=useParams()
+    const[details,setDetails]=useState()
+    const cart=useSelector(state=>state.cart)
+ const dispatch=useDispatch()
+
+    const fetchProductData=async()=>{
+        const response=await fetch(`http://localhost:5000/api/products/details/${productID}`,{
+            method:'GET',
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+        const data=await response.json()
+        if(data.error){
+            toast.error(data.error)
+        }
+        else{
+            setDetails(data)
+        }
+        
+    }
+    const addToCart=async()=>{
+        const updateCart=await fetchPOSTPUT('/products/addToCart','PATCH','user_token',{productId:details._id})
+       
+        if(updateCart.message=="Token has expired, Please login"){
+          navigator('/users/login')
+          toast.error(updateCart.message)
+         
+        }
+        if(!updateCart.error){
+          const updatedCart=JSON.parse(localStorage.getItem('user_data'))
+          updatedCart?.cartItems.push(details._id)
+          localStorage.setItem('user_data',JSON.stringify(updatedCart))
+          toast.success(updateCart.message)
+        }
+       
+        dispatch(actions.addToCart(details))
+       }
+       const removeFromCart=async()=>{
+        const removeFromCart=await fetchPOSTPUT('/products/removeFromCart','PATCH','user_token',{productId:details._id})
+        if(removeFromCart.message=="Token has expired, Please login"){
+          return navigator('/users/login')
+        }
+        if(removeFromCart.message){
+          let updatedCart = JSON.parse(localStorage.getItem('user_data'));
+          updatedCart.cartItems = updatedCart?.cartItems?.filter(item => item !== details._id);
+          localStorage.setItem('user_data', JSON.stringify(updatedCart));
+          toast.success(removeFromCart.message)
+            
+        }
+         dispatch(actions.removeFromCart(details))
+       }
+    useEffect(()=>{
+        fetchProductData()
+    },[])
   return (
-    <>
-      <div className="fixed inset-0 flex items-center justify-center">
-      </div>
-
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-            <Dialog.Panel>
-                <section className="overflow-hidden bg-white px-3 rounded-2xl py-3">
-      <div className="mx-auto max-w-5xl pr-5">
-        <div className="mx-auto flex flex-wrap items-center">
+    <div className='ProductDetails'>
+    <section className="overflow-hidden">
+      <div className="mx-auto max-w-5xl px-5 py-24">
+        <div className="mx-auto flex flex-wrap items-center lg:w-4/5">
           <img
-            alt="Nike Air Max 21A"
-            className="h-64 w-full rounded object-contain lg:h-96 lg:w-1/2"
+            alt="no_prev"
+            className="h-64 w-full rounded object-cover lg:h-96 lg:w-1/2"
         src={details?.image}
             />
           <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:pl-10">
-  <h2 className="text-sm font-semibold tracking-widest text-gray-500">#{details?.category}</h2>
-            <h1 className="my-4 text-3xl font-semibold text-black text-left">{details?.title}</h1>
-            <div className="my-4 flex items-center">
-              <span className="flex items-center space-x-1">
-                <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-</svg>
-<p class="ml-2 text-sm font-bold text-gray-900 dark:text-black">2.5</p>
-<span class="w-1 h-1 mx-1.5 bg-black rounded-full dark:text-black"></span>
-                <p className="ml-2 text-sm font-bold text-gray-900 dark:text-black">10 reviews</p>
-              </span>
+          <div className="flex">
+            <h2 className="text-sm font-semibold tracking-widest text-gray-500">#{details?.category}</h2>
+            <h2 className="ml-auto cursor-pointer" onClick={()=>{
+                copy(`http://localhost:5173/product/details/${details._id}`)
+                toast.success('Link copied to clipboard!')
+            }}><Share /></h2>
             </div>
-            <p className="leading-relaxed text-left" style={{'overflowWrap':'anywhere'}}>
+            <h1 className="my-4 text-3xl font-semibold text-black">{details?.title}</h1>
+            <p className="my-4 text-lg font-semibold text-black">Sold by {details?.createdBy?.shopName}</p>
+            {/*<div className="my-4 flex items-center">
+              <span className="flex items-center space-x-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="text-yellow-500" />
+                ))}
+                <span className="ml-3 inline-block text-xs font-semibold">4 Reviews</span>
+              </span>
+                </div>*/}
+            <p className="leading-relaxed">
               {details?.description}
             </p>
-            <div className="flex items-center justify-between mt-10">
-              <span className="title-font text-xl font-bold text-gray-900">${details.price}</span>
-              {!JSON.parse(localStorage.getItem('user_data'))?.cartItems?.includes(details._id)?
-              <button
-                type="button"
-                className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-             onClick={()=>add()} >
-                Add to Cart
-              </button>
+            <div className="mb-5 mt-6 flex items-center border-b-2 border-gray-100 pb-5">
+          
+             
+            </div>
+            <div className="flex items-center">
+              <span className="title-font text-xl font-bold text-gray-900">${details?.discountedPrice}</span>
+              <span className="title-font text-xl font-bold text-gray-400 line-through ml-5">
+                ${details?.price}
+              </span>
+              {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems)?.includes(details?._id)?
+              details?.quantity > 0?
+                 <button
+               type="button"
+               className="ml-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+               onClick={()=>addToCart()}
+               >
+               Add to Cart
+             </button>
+             :
+          <p className='text-lg text-red-600 font-bold text-center'>Out of Stock</p>
               :
               <button
-                type="button"
-                className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-             onClick={()=>remove()} >
-                Remove from Cart
-              </button>
-              }
+              type="button"
+              className="ml-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              onClick={()=>removeFromCart()}
+              >
+              Remove from Cart
+            </button>
+             }
             </div>
           </div>
         </div>
       </div>
     </section>
-    </Dialog.Panel>
-                 
-                
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+  
+
+
+    </div>
   )
 }
+
+export default ProductDetails

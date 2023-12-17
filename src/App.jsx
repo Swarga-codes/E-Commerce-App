@@ -18,7 +18,7 @@ import { Toaster } from 'react-hot-toast'
 import ProductEdit from './Components/ProductEdit/ProductEdit'
 import SellerProfile from './Components/SellerProfile/SellerProfile'
 import SellerAnalytics from './Components/SellerAnalytics/SellerAnalytics'
-import ProductDetailsDemo from './Components/ProductDetails/ProductDetailsDemo'
+import ProductDetailsDemo from './Components/ProductDetails/ProductDetails'
 function App() {
 
   return (

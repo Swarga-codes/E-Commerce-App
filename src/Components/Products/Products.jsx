@@ -7,7 +7,6 @@ import { fetchGET, fetchPOSTPUT } from '../../util/useFetch'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 function Products({details,idx}) {
- const[open,setOpen]=React.useState(false)
  const navigator=useNavigate()
  const cart=useSelector(state=>state.cart)
  const dispatch=useDispatch()
@@ -43,49 +42,47 @@ function Products({details,idx}) {
   }
    dispatch(actions.removeFromCart(details))
  }
- function closeModal(){
-  setOpen(false)
- }
+ 
   return (
     <>
     <div className="m-0 mr-5 flex-shrink-0 flex-grow max-w-xs items-center px-2 py-10" style={{'overflowWrap':'anywhere'}}>
     <div className="rounded-md border shadow-lg">
       <img
-        src={details.image}
+        src={details?.image}
         alt="no preview"
         className="aspect-[16/9] w-full rounded-md md:aspect-auto md:h-[300px] lg:h-[200px] px-2"
-        onClick={()=>setOpen(true)}/>
+        onClick={()=>navigator(`product/details/${details?._id}`)}/>
       <div className="p-4">
-        <h1 className="inline-flex items-center text-lg font-semibold" onClick={()=>setOpen(true)}>
-          {details.title}
+        <h1 className="inline-flex items-center text-lg font-semibold" onClick={()=>navigator(`product/details/${details?._id}`)}>
+          {details?.title}
         </h1>
-        <p className="mt-3 text-sm text-gray-600" onClick={()=>setOpen(true)}>
-          {LimitPara(details.description,20)}
+        <p className="mt-3 text-sm text-gray-600" onClick={()=>navigator(`product/details/${details?._id}`)}>
+          {LimitPara(details?.description,20)}
         </p>
-        <div className="mt-4" onClick={()=>setOpen(true)}>
+        <div className="mt-4" onClick={()=>navigator(`product/details/${details?._id}`)}>
           <span className="mb-2 mr-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-[16px] font-semibold text-gray-900">
-            #{details.category}
+            #{details?.category}
           </span>
         
         </div>
-        <div className="mt-3 flex items-center space-x-2" onClick={()=>setOpen(true)}>
+        <div className="mt-3 flex items-center space-x-2" onClick={()=>navigator(`product/details/${details?._id}`)}>
          
 {/*<div class="flex items-center">
 <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
 </svg>
-<p class="ml-2 text-sm font-bold text-gray-900 dark:text-black">{details.rating.rate}</p>
+<p class="ml-2 text-sm font-bold text-gray-900 dark:text-black">{details?.rating?.rate}</p>
 <span class="w-1 h-1 mx-1.5 bg-black rounded-full dark:text-black"></span>
-<a class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-black">{details.rating.count} reviews</a>
+<a class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-black">{details?.rating?.count} reviews</a>
   </div>*/}
 
         </div>
         <div className="mt-5 flex items-center space-x-2">
-          <span className="block text-3xl font-semibold">${details.price}</span>
+          <span className="block text-3xl font-semibold">${details?.price}</span>
         
         </div>
         {/*{!cart.find(obj=>obj.title===details.title)?*/}
-          {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems)?.includes(details._id)?
+          {!(JSON.parse(localStorage.getItem('user_data'))?.cartItems)?.includes(details?._id)?
        details?.quantity > 0?
           <button
         type="button"
@@ -109,7 +106,7 @@ function Products({details,idx}) {
     </div>
  
     </div>
-    {open && <ProductDetails details={details} remove={removeFromCart} add={addToCart} isOpen={open} closeModal={closeModal}/>}
+    
    </>
   )
 }
