@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
 import Dropdown from './Dropdown'
 import { useLocation } from 'react-router-dom'
@@ -11,17 +11,30 @@ export default function Navbar() {
   const counter=useSelector(state=>state.cart)
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-
+  const [searchQuery,setSearchQuery]= React.useState("");
+  const [productData,setProductData]= React.useState([])
+  const navigator=useNavigate()
  const location=useLocation()
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
-  
- 
+  async function getProducts() {
+    const response=await fetch('http://localhost:5000/api/products/display')
+    const data=await response.json()
+    setProductData(data)
+    console.log(data)
+   
+  }
+  function getSearchResults(searchQuery){
+    const searchResults=productData.filter(item=>item?.title?.toLowerCase().includes(searchQuery.toLowerCase()))
+    return searchResults
+  }
 if(layoutException.includes(location.pathname)) {
 return null
 }
-
+useEffect(()=>{
+getProducts()
+},[])
   return (
     <div className="relative w-full bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -35,37 +48,47 @@ return null
           <span className="font-bold text-2xl">MyShop.</span>
         </div>
         </Link>
-       <div className="flex-col flex grow justify-center items-center">
-       
-          <input
-            className="flex h-10 w-[50%] rounded-md bg-gray-200 px-3 py-2 border-solid border-2 border-black text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-            type="text"
-            placeholder="Search for products..."
-            ></input>
-        
-            {/*{searchQuery && (
-            <div className='w-[250px] z-30 border-solid border-2 rounded-xl shadow-md p-2 bg-white mt-[9rem]'>
-            {getSearchResults(searchQuery).length>0? (
-              getSearchResults(searchQuery)?.map(item=>(
-    <div className='mt-4 flex'>
-      <img src={item?.image} alt="no prev" className='w-16 h-16'/>
-      <div className='ml-5'>
-      <h1 className='font-bold'>{item?.title}</h1>
-      <p className='font-semibold'>${item?.discountedPrice}</p>
+        <div className="flex m-auto md:w-[250px]">
+        <input
+          className="w-full h-10 rounded-md border-2 border-black bg-gray-100 px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-30 disabled:opacity-50"
+          type="text"
+          placeholder="Search for products..."
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            // console.log(e.target.value);
+          }}
+        />
+        {searchQuery && (
+          <div className="fixed w-[250px] mt-12 z-30 border-solid border-2 rounded-xl shadow-md p-4 bg-white">
+            {getSearchResults(searchQuery).length > 0 ? (
+              getSearchResults(searchQuery)?.map((result) => (
+                <div
+                className='flex mt-4'
+                  key={result._id}
+                  onClick={() => {
+                    navigator(`/product/details/${result._id}`);
+                    setSearchQuery("");
+                  }}
+                >
+                <img src={result?.image} alt="no_prev" className='w-16 h-16 rounded-md'/>
+                <div className='ml-2'>
+                  <h1>
+                    <b>{result?.title}</b>
+                  </h1>
+                  <p className="text-sm mt-1 mb-2">
+                    ${result?.discountedPrice}
+                  </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="font-semibold">No results found.</p>
+            )}
+          </div>
+        )}
       </div>
-      </div>
-      ))
-            )
-            :
-      <p className='font-bold'>No results found.</p>
-
-            }
-          
-      </div>
-          )}*/}
-        </div>
       
-        <div className='mr-5 flex'>
+        <div className='mr-5 flex ml-auto'>
        
         {localStorage.getItem('user_token') &&
           <Link to='/cart'>

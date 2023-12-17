@@ -65,7 +65,7 @@ function ProductDetails() {
         fetchProductData()
     },[])
   return (
-    <div className='ProductDetails'>
+    <div className='ProductDetails' style={{overflowWrap:'anywhere'}}>
     <section className="overflow-hidden">
       <div className="mx-auto max-w-5xl px-5 py-24">
         <div className="mx-auto flex flex-wrap items-center lg:w-4/5">
