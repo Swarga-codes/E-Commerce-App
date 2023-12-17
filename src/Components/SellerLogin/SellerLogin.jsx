@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import SellerAuthLogo from '../../assets/shopkeeperauth.png'
+import { Ring } from '@uiball/loaders'
 export default function SellerLogin() {
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
   const [error,setError]=useState("")
+  const [loader,setLoader]=useState(false)
   const navigator=useNavigate()
   const loginSeller=async()=>{
     const response=await fetch('http://localhost:5000/api/auth/seller/login',{
@@ -27,6 +29,7 @@ export default function SellerLogin() {
       localStorage.setItem('seller_details',JSON.stringify(data.sellerData))
       navigator('/seller/dashboard')
     }
+    setLoader(false)
   }
   return (
     <section className="p-2">
@@ -50,6 +53,7 @@ export default function SellerLogin() {
           <p className='text-center text-red-500 font-semibold'>{error}</p>
           <form className="mt-8" onSubmit={(e)=>{
             e.preventDefault()
+            setLoader(true)
             loginSeller()
           }}>
             <div className="space-y-5">
@@ -90,12 +94,25 @@ export default function SellerLogin() {
                 </div>
               </div>
               <div>
+               {!loader? 
                 <button
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
                   Log In <ArrowRight className="ml-2" size={16} />
                 </button>
+                :
+                <button
+                type='button'
+                className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                >
+                <Ring 
+      size={30}
+      lineWeight={5}
+      speed={2} 
+      color="white" 
+     />
+     </button>}
               </div>
               <p className="mt-2text-sm text-gray-600 ">
               Are you a customer?{' '}

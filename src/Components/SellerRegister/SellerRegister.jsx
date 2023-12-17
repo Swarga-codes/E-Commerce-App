@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import SellerAuthLogo from '../../assets/shopkeeperauth.png'
+import { Ring } from '@uiball/loaders'
 export default function SellerRegister() {
   const [shopName,setShopName]=useState("");
   const [email,setEmail]=useState("");
@@ -9,6 +10,7 @@ export default function SellerRegister() {
   const [upiId,setUpiId]=useState("");
   const [password,setPassword]=useState("");
   const [error,setError]=useState("");
+  const [loader,setLoader]=useState(false)
   const navigator=useNavigate()
   const registerSeller=async()=>{
     const response=await fetch('http://localhost:5000/api/auth/seller/register',{
@@ -31,6 +33,7 @@ export default function SellerRegister() {
     else{
       navigator('/seller/login')
     }
+    setLoader(false)
   }
   return (
     <section className="p-2">
@@ -54,6 +57,7 @@ export default function SellerRegister() {
           <p className='text-center text-red-500 font-semibold'>{error}</p>
           <form className="mt-8" onSubmit={(e)=>{
             e.preventDefault();
+            setLoader(true)
             registerSeller();
           }}>
             <div className="space-y-5">
@@ -138,12 +142,26 @@ export default function SellerRegister() {
                 </div>
               </div>
               <div>
-                <button
+              {!loader?
+                  <button
                   type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                 >
                   Get started <ArrowRight className="ml-2" size={16} />
                 </button>
+              :
+              <button
+                type='button'
+                className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                >
+                <Ring 
+      size={30}
+      lineWeight={5}
+      speed={2} 
+      color="white" 
+     />
+     </button>
+              }
               </div>
               <p className="mt-2text-sm text-gray-600 ">
               Are you a customer?{' '}
