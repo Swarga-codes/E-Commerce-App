@@ -52,6 +52,18 @@ const products=await PRODUCTS.find({createdBy:req.seller._id}).sort({_id:-1})
 if(!products) return res.status(500).json({error:'Could not fetch products, try again'})
 return res.status(200).json(products)
 }
+//------------GET products by ID---------------//
+const getProductDetails=async(req,res)=>{
+  try{
+  const products=await PRODUCTS.findById(req.params.productID).populate('createdBy')
+  if(!products) return res.status(404).json({error:'Product not found!'})
+  return res.status(200).json(products)
+  }
+  catch(error){
+    return res.status(500).json({error:'Internal Server Error'})
+  }
+  
+}
 
 //------------Add product to cart---------------//
 const addToCart = async (req, res) => {
@@ -186,4 +198,4 @@ catch(error){
 }
 }
 
-module.exports = { createProducts,displayProducts,myProducts,addToCart,getCartItems,removeCartItems,deleteProduct,updateProduct };
+module.exports = { createProducts,displayProducts,myProducts,getProductDetails,addToCart,getCartItems,removeCartItems,deleteProduct,updateProduct };
