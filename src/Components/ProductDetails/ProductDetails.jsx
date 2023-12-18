@@ -94,7 +94,7 @@ function ProductDetails() {
                   className="ml-auto cursor-pointer"
                   onClick={() => {
                     copy(
-                      `http://localhost:5173/product/details/${details._id}`
+                      `http://e-commerce-app-ten-lime.vercel.app/product/details/${details._id}`
                     );
                     toast.success("Link copied to clipboard!");
                   }}
