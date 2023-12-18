@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import SellerNavbar from "../SellerNavbar/SellerNavbar";
 import Category from "./Category";
 import { useNavigate } from "react-router-dom";
@@ -40,21 +40,20 @@ function CreateProducts() {
   function sendImageToCloudinary() {
     const data = new FormData();
     data.append("file", image);
-    data.append("upload_preset", "e_commerce_app");
-    data.append("cloud_name", "markus0509");
-    fetch("https://api.cloudinary.com/v1_1/markus0509/image/upload", {
+    data.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+    data.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
+    fetch(import.meta.env.VITE_CLOUDINARY_API, {
       method: "POST",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
         setHostedUrl(data.url);
-        // console.log(data);
       })
       .catch((err) => console.log(err));
   }
   const createProduct = async () => {
-    const response = await fetch("http://localhost:5000/api/products/create", {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_API}api/products/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

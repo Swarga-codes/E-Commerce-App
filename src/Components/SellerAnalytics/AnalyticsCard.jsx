@@ -1,18 +1,20 @@
-import React from 'react'
-import { ArrowUpRight } from 'lucide-react'
-import Lottie from 'lottie-react'
-function AnalyticsCard({heading,count,width,animationData}) {
+import React from "react";
+import { ArrowUpRight } from "lucide-react";
+import Lottie from "lottie-react";
+function AnalyticsCard({ heading, count, width, animationData }) {
   return (
     <div className="flex max-w-2xl flex-col items-center rounded-md border md:flex-row shadow-lg mx-10 mb-10">
       <div
-        className={`h-fit w-fit p-5 md:h-[200px] md:w-[${width ? width : "150px"}]`}
+        className={`h-fit w-fit p-5 md:h-[200px] md:w-[${
+          width ? width : "150px"
+        }]`}
       >
         <Lottie
           animationData={animationData}
           loop={false}
           autoplay
           className="h-full w-fit rounded-md object-cover"
-  />
+        />
       </div>
       <div>
         <div className="p-4">
@@ -28,7 +30,7 @@ function AnalyticsCard({heading,count,width,animationData}) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default AnalyticsCard
+export default AnalyticsCard;

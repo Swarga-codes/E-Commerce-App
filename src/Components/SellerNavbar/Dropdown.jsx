@@ -13,9 +13,7 @@ export default function Dropdown({}) {
         <Menu.Button className="">
           <img
             className="inline-block h-8 w-8 rounded-full"
-            src={
-      JSON.parse(localStorage.getItem('seller_details'))?.profilePic
-          }
+            src={JSON.parse(localStorage.getItem("seller_details"))?.profilePic}
             alt="no prev"
           />
         </Menu.Button>
@@ -32,19 +30,19 @@ export default function Dropdown({}) {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-          <Menu.Item>
-          {({ active }) => (
-            <Link
-            to='/seller/dashboard'
-              className={classNames(
-                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                "block px-4 py-2 text-sm"
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  to="/seller/dashboard"
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
+                  )}
+                >
+                  Dashboard
+                </Link>
               )}
-            >
-              Dashboard
-            </Link>
-          )}
-        </Menu.Item>
+            </Menu.Item>
             <Menu.Item>
               {({ active }) => (
                 <a

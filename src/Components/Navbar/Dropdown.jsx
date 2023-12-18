@@ -13,9 +13,7 @@ export default function Dropdown({}) {
         <Menu.Button className="">
           <img
             className="inline-block h-8 w-8 rounded-full"
-            src={
-      JSON.parse(localStorage.getItem('user_data')).profilePic
-          }
+            src={JSON.parse(localStorage.getItem("user_data")).profilePic}
             alt="no prev"
           />
         </Menu.Button>
@@ -32,40 +30,36 @@ export default function Dropdown({}) {
       >
         <Menu.Items className="absolute cursor-pointer right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-          <Menu.Item>
-          {({ active }) => (
-            <a
-              onClick={() => {
-               
-                  navigator("/users/myorders");
-            
-              }}
-              className={classNames(
-                active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                "block px-4 py-2 text-sm"
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={() => {
+                    navigator("/users/myorders");
+                  }}
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
+                  )}
+                >
+                  My Orders
+                </a>
               )}
-            >
-             My Orders
-            </a>
-          )}
-        </Menu.Item>
-        <Menu.Item>
-        {({ active }) => (
-          <a
-            onClick={() => {
-             
-                navigator("/user/profile");
-          
-            }}
-            className={classNames(
-              active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-              "block px-4 py-2 text-sm"
-            )}
-          >
-           Account Settings
-          </a>
-        )}
-      </Menu.Item>
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={() => {
+                    navigator("/user/profile");
+                  }}
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
+                  )}
+                >
+                  Account Settings
+                </a>
+              )}
+            </Menu.Item>
             <Menu.Item>
               {({ active }) => (
                 <a
