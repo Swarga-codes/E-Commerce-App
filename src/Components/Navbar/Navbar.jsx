@@ -29,12 +29,13 @@ export default function Navbar() {
     const searchResults=productData.filter(item=>item?.title?.toLowerCase().includes(searchQuery.toLowerCase()))
     return searchResults
   }
+  useEffect(()=>{
+    getProducts()
+    },[])
 if(layoutException.includes(location.pathname)) {
 return null
 }
-useEffect(()=>{
-getProducts()
-},[])
+
   return (
     <div className="relative w-full bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
