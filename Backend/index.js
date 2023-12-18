@@ -25,7 +25,7 @@ app.use('/api/products',Products)
 app.use('/api/users',UserData)
 app.use('/api/sellers',SellerData)
 app.get('/',(req,res)=>{
-res.send('Hello')
+res.send('Welcome to E-Commerce Backend App!')
 })
 
 app.listen(PORT,()=>{

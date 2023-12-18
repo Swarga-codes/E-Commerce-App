@@ -21,9 +21,7 @@ export default function Navbar() {
   async function getProducts() {
     const response=await fetch('http://localhost:5000/api/products/display')
     const data=await response.json()
-    setProductData(data)
-    console.log(data)
-   
+    setProductData(data)   
   }
   function getSearchResults(searchQuery){
     const searchResults=productData.filter(item=>item?.title?.toLowerCase().includes(searchQuery.toLowerCase()))

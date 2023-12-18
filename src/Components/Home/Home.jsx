@@ -3,6 +3,7 @@ import Products from '../Products/Products';
 import { fetchGET } from '../../util/useFetch';
 import { Ring } from '@uiball/loaders';
 import { useNavigate } from 'react-router-dom';
+import CarouselComponent from '../Carousel/CarouselComponent';
 function Home() {
   const [products, setProducts] = useState([]);
 const [loader,setLoader]=useState(true)
@@ -16,6 +17,7 @@ const [loader,setLoader]=useState(true)
 
   return (
     <div className='mx-auto max-w-12xl px-4 py-2 sm:px-6 lg:px-8 mt-5'>
+    <CarouselComponent/>
       <h1 className='font-bold text-2xl mx-10 mb-4'>Products</h1>
      {loader &&
       <>
