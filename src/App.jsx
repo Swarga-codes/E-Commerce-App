@@ -1,6 +1,6 @@
 import './App.css'
 import Home from './Components/Home/Home'
-import { Route,Routes } from 'react-router-dom'
+import { Route,Routes,Navigate } from 'react-router-dom'
 import Cart from './Components/Cart/Cart'
 import UserLogin from './Components/UserLogin/UserLogin'
 import UserSignup from './Components/UserRegsiter/UserSignUp'
@@ -17,6 +17,7 @@ import { Toaster } from 'react-hot-toast'
 import SellerProfile from './Components/SellerProfile/SellerProfile'
 import SellerAnalytics from './Components/SellerAnalytics/SellerAnalytics'
 import ProductDetails from './Components/ProductDetails/ProductDetails'
+import ErrorPage from './Components/ErrorPage/ErrorPage'
 function App() {
 
   return (
@@ -39,6 +40,8 @@ function App() {
     <Route exact path='/cart/checkout' element={<CheckoutPage/>}/>
     <Route exact path='/cart/checkout/orderplaced' element={<OrderPlaced/>}/>
     <Route exact path='/users/myorders' element={<MyOrders/>}/>
+    <Route exact path='/404/errorpage' element={<ErrorPage/>}/>
+    <Route exact path='*' element={<Navigate to='/404/errorpage'/>}/>
 </Routes>
     </>      
   )

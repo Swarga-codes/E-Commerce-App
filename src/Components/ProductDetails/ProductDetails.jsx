@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import copy from "copy-to-clipboard";
 import { Share } from "lucide-react";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ function ProductDetails() {
   const { productID } = useParams();
   const [details, setDetails] = useState();
   const [loader, setLoader] = useState(true);
+  const navigator=useNavigate()
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -26,7 +27,11 @@ function ProductDetails() {
     const data = await response.json();
     if (data.error) {
       toast.error(data.error);
-    } else {
+    }
+    if(data.error==='Internal Server Error'){
+      navigator('/404/errorpage')
+    }
+     else {
       setDetails(data);
     }
     setLoader(false);
