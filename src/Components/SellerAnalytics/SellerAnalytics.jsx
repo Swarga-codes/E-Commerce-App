@@ -4,12 +4,14 @@ import AnalyticsCard from "./AnalyticsCard";
 import Products from "../../assets/products.json";
 import Orders from "../../assets/orders.json";
 import OrdersComplete from "../../assets/orders_complete.json";
+import Revenue from "../../assets/revenue.json";
 function SellerAnalytics() {
   const [noOfProducts, setNoOfProducts] = useState("Hang on, loading...");
   const [noOfOrders, setNoOfOrders] = useState("Hang on, loading...");
   const [noOfOrdersCompleted, setNoOfOrdersCompleted] = useState(
     "Hang on, loading..."
   );
+  const [revenue, setRevenue] = useState("Hang on, loading...");
   const fetchMyProducts = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_API}api/products/myProducts`,
@@ -39,6 +41,17 @@ function SellerAnalytics() {
     setNoOfOrdersCompleted(
       data.filter((order) => order.isComplete === true)?.length
     );
+    setRevenue(
+      data
+        ?.filter((order) => order.isComplete === true)
+        ?.flatMap((order) => order.orderItems)
+        ?.filter(
+          (item) =>
+            item.createdBy?._id ===
+            JSON.parse(localStorage.getItem("seller_details"))?.id
+        )
+        ?.reduce((acc, curr) => acc + (curr?.discountedPrice ?? 0), 0)
+    );
   }
   useEffect(() => {
     fetchMyProducts();
@@ -64,6 +77,11 @@ function SellerAnalytics() {
             heading={"Orders Delivered"}
             count={noOfOrdersCompleted}
             animationData={OrdersComplete}
+          />
+          <AnalyticsCard
+            heading={"Revenue Generated"}
+            count={`$${revenue}`}
+            animationData={Revenue}
           />
         </div>
       </div>
