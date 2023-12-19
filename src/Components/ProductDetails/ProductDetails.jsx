@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { fetchPOSTPUT } from "../../util/useFetch";
 import { useSelector, useDispatch } from "react-redux";
 import { actions } from "../../util/Store";
+import ReactImageMagnify from 'react-image-magnify';
+import './ProductDetails.css'
 function ProductDetails() {
   const { productID } = useParams();
   const [details, setDetails] = useState();
@@ -13,7 +15,6 @@ function ProductDetails() {
   const navigator=useNavigate()
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-
   const fetchProductData = async () => {
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_API}api/products/details/${productID}`,
@@ -82,15 +83,35 @@ function ProductDetails() {
   }, []);
   return (
     <div className="ProductDetails" style={{ overflowWrap: "anywhere" }}>
+    
       <section className="overflow-hidden">
         <div className="mx-auto max-w-5xl px-5 py-24">
           <div className="mx-auto flex flex-wrap items-center lg:w-4/5">
-            <img
+            {/*<img
               alt="no_prev"
               className="h-64 w-full rounded object-cover lg:h-96 lg:w-1/2"
               src={details?.image}
-            />
-            <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:pl-10">
+  />*/}
+            <div className="h-64 w-full rounded object-cover lg:h-96 lg:w-1/2 flex">
+   
+            <ReactImageMagnify className="MagnifyImage h-auto" {...{
+              smallImage: {
+                  alt: details?.title,
+                  isFluidWidth: true,
+                  src: details?.image,
+              },
+              largeImage: {
+                  src: details?.image,
+                  width: 450,
+                  height: 450,
+                  
+              }
+          }} />
+</div>
+  
+ 
+
+            <div className="mt-36 w-full lg:mt-0 lg:w-1/2 lg:pl-10">
               <div className="flex">
                 <h2 className="text-sm font-semibold tracking-widest text-gray-500">
                   #{loader ? "Loading..." : details?.category}
