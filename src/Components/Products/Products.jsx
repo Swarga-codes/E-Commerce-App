@@ -16,11 +16,10 @@ function Products({ details, idx }) {
       "user_token",
       { productId: details._id }
     );
-    console.log(updateCart);
 
-    if (updateCart.message == "Token has expired, Please login") {
+    if (updateCart.error === "Token has expired, Please login" || updateCart.error==="Internal server error") {
       navigator("/users/login");
-      toast.error(updateCart.message);
+      toast.error(updateCart.error);
     }
     if (!updateCart.error) {
       const updatedCart = JSON.parse(localStorage.getItem("user_data"));
